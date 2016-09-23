@@ -7,6 +7,10 @@ app.get('/', function (req, res) {
     res.status(200);
 });
 
+app.get("*", function(req, res) { 
+	res.redirect("/")
+});
+
 app.listen(process.env.PORT || 8080, function(err) {
 	if (err) {
 		console.log('port 8080 not working');
