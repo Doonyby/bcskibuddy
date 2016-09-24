@@ -7,8 +7,17 @@ app.get('/', function (req, res) {
     res.status(200);
 });
 
+app.get('/user', function(req, res) {
+	res.html('/user.html');
+	res.status(200);
+});
+
+// app.get('/location/trips', function(req, res) {
+//		display mockUpcomingTrips{}
+// });
+
 app.get("*", function(req, res) { 
-	res.redirect("/")
+	res.redirect("/");
 });
 
 app.listen(process.env.PORT || 8080, function(err) {
