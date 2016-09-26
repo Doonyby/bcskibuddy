@@ -1,3 +1,5 @@
+var totalTripLocations = ["logan", "ogden", "salt lake", "provo", "uintas", "skyline", "moab", "abajos"];
+
 var mockUpcomingTrips = {
 	"upcomingTrips": [
 		{
@@ -83,7 +85,5 @@ mockUpcomingTrips.upcomingTrips.forEach(function(object) {
 	var party = object.usersGoing.length;
 	$('#tripInfo').html('<li><p>' + date + ": " + time + '</p><p>Area: ' + area + 
 		'</p><p>Planned difficulty: ' + difficulty + 
-		'</p><p>Group size: <a href="partySize">' + party + '</a></p></li>')
+		'</p><p>Group size: <a href="partySize">' + party + '</a></p></li>');
 });
-
-exports.upcomingTrips = mockUpcomingTrips;

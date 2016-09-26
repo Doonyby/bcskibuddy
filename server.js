@@ -3,12 +3,11 @@ var app = express();
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-    res.html('public/index.html');
     res.status(200);
 });
 
 app.get('/user', function(req, res) {
-	res.html('/user.html');
+	res.sendfile('./public/user.html');
 	res.status(200);
 });
 

@@ -17,5 +17,14 @@ describe('bcskibuddy', function() {
     			done();
     		});
     });
+    it('should display hello world user on GET User', function(done) {
+    	chai.request(app)
+    		.get('/user')
+    		.end(function(err, res) {
+    			res.should.have.status(200);
+    			res.should.be.html;
+    			done();
+    		})
+    })
 });
 
