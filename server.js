@@ -11,6 +11,11 @@ app.get('/user', function(req, res) {
 	res.status(200);
 });
 
+app.get('/info', function(req, res) {
+	res.sendfile('./public/info.html');
+	res.status(200);
+});
+
 // app.get('/location/trips', function(req, res) {
 //		display mockUpcomingTrips{}
 // });

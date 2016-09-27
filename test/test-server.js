@@ -24,7 +24,16 @@ describe('bcskibuddy', function() {
     			res.should.have.status(200);
     			res.should.be.html;
     			done();
-    		})
-    })
+    		});
+    });
+    it('should display info page on GET Info', function(done) {
+    	chai.request(app)
+    		.get('/info')
+    		.end(function(err, res) {
+    			res.should.have.status(200);
+    			res.should.be.html;
+    			done();
+    		});
+    });
 });
 
