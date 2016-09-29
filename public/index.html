@@ -11,41 +11,58 @@
 
 </head>
 <body>
-	<div id="siteIntro">
-		<p>This will be a paragraph that briefly introduces the app with a link that goes to more information
-		 about the site <a href="/info">here</a>.</p>
-		<p id="par">client.js not working</p>
-		<a href="/user">Go to users</a>
-	</div>
-	<div id="loginDiv">
-		<div id="newAccount">
-			<p>New to bcskibuddy? Create an account <a id="myBtn" href="#myBtn">here</a>!</p>
-			
-			<div id="myModal" class="modal">
-				<div class="modal-content">
-				  <div class="modal-header">
-				    <span class="close">×</span>
-				    <h2>Please enter a username and password.</h2>
-				  </div>
-				  <div class="modal-body">
-				    <form id="newAcctForm">
-				    	<input type="text" placeholder="name" id="name">
-				    	<input type="text" placeholder="username" id="username">
-				    	<input type="text" placeholder="password" id="password">
-				    	<input type="text" placeholder="confirm password" id="password2">
-				    	<input type="submit">
-				    </form>
-				  </div>
-				  <div class="modal-footer">
-				    <h3>All fields are required.</h3>
+	<div class="containter">
+		<div class="row" id="siteIntro">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<p>This will be a paragraph that briefly introduces the app with a link that goes to more information
+				 about the site <a href="/info">here</a>.</p>
+				<p id="par">client.js not working</p>
+				<a href="/user">Go to users</a>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+		<div class="row" id="loginDiv">
+			<div class="col-md-3"></div>
+			<div class="col-md-6" id="newAccount">
+				<p>New to bcskibuddy? Create an account <a id="myBtn" href="#myBtn">here</a>!</p>
+				<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+				  <div class="modal-dialog modal-sm" role="document">
+				    <div class="modal-content">
+					  <div class="modal-header">
+					    <span class="close">×</span>
+					    <h2>Please enter a username and password.</h2>
+					  </div>
+					  <div class="modal-body">
+					    <form id="newAcctForm">
+					    	<input type="text" placeholder="name" id="name">
+					    	<input type="text" placeholder="username" id="username">
+					    	<input type="text" placeholder="password" id="password">
+					    	<input type="text" placeholder="confirm password" id="password2">
+					    	<input type="submit" id="newAcctSubmit">
+					    </form>
+					  </div>
+					  <div class="modal-footer">
+					    <h2>All fields are required.</h2>
+					  </div>
+				    </div>
 				  </div>
 				</div>
 			</div>
-
+			<div class="col-md-3"></div>
 		</div>
-		<div id='existingAccount'>
-			
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6" id="existingAccount">
+				<p>If you already have an account, please login below.</p>
+				<form>
+					<input type="text" placeholder="username" id="username">
+			    	<input type="text" placeholder="password" id="password">
+			    	<input type="submit">
+				</form>
+			</div>
+			<div class="col-md-3"></div>
 		</div>
-	</div>
+	</div>	
 </body>
 </html>
