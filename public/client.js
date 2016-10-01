@@ -48,7 +48,7 @@ function submitNewAcctForm() {
 		$('#username').val('');
 		$('#password').val('');
 		$('#password2').val('');
-		$('#formScrewUP').text('');
+		$('#formScrewUp').text('');
 		$('.modal').modal('hide');
 	}
 	function checkUsernameRepeat(name) {
@@ -67,10 +67,12 @@ var Users = function() {
 	this.users = [];
 }
 
-Users.prototype.getUser = function() {
-	var ajax = $.ajax('/users', {
+Users.prototype.getUser = function(username) {
+	var ajax = $.ajax('/users/:' + username, {
         type: 'GET',
         dataType: 'json'
+    }).done(function(data) {
+    	console.log(data);
     });
 };
 

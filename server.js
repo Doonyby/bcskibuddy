@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
+var Users = require('./models/user.js');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use('/jquery', express.static('./node_modules/jquery/dist/'));
@@ -42,7 +43,7 @@ app.get('/user', function(req, res) {
 });
 
 app.get('/users', function(req, res) {
-    User.find(function(err, items) {
+    Users.find({username: req.params.username}, function(err, items) {
         if (err) {
             return res.status(500).json({
                 message: 'Internal Server Error'
@@ -53,8 +54,8 @@ app.get('/users', function(req, res) {
 });
 
 app.post('/users', function(req, res) {
-    User.create({name: req.body.name}, function(error, item) {
-        console.log(req.body);
+    Users.create({name: req.body.name, username: req.body.username, password: req.body.password}, function(error, item) {
+        console.log(error);
         if (error) {
             return res.status(500).json({
                 message: 'Internal Server Error'
