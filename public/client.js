@@ -4,6 +4,11 @@ $(document).ready(function() {
 		$('.modal').modal('show');
 	});
 	$('.close').click(function() {
+		$('#name').val('');
+		$('#username').val('');
+		$('#password').val('');
+		$('#password2').val('');
+		$('#formScrewUP').text('');
 		$('.modal').modal('hide');
 	});
 	$('#newAcctForm').submit(function(e) {
@@ -39,10 +44,10 @@ function submitNewAcctForm() {
 	}
 	else {
 		siteUsers.addUser(name, username, password);
-		var name = $('#name').val('');
-		var username = $('#username').val('');
-		var password = $('#password').val('');
-		var password2 = $('#password2').val('');
+		$('#name').val('');
+		$('#username').val('');
+		$('#password').val('');
+		$('#password2').val('');
 		$('#formScrewUP').text('');
 		$('.modal').modal('hide');
 	}
@@ -62,17 +67,24 @@ var Users = function() {
 	this.users = [];
 }
 
+Users.prototype.getUser = function() {
+	var ajax = $.ajax('/users', {
+        type: 'GET',
+        dataType: 'json'
+    });
+};
+
 Users.prototype.addUser = function(name, username, password) {
     var user = {'name':name, 'username': username, 'password': password};
-    // var ajax = $.ajax('/users', {
-    //     type: 'POST',
-    //     data: JSON.stringify(user),
-    //     dataType: 'json',
-    //     contentType: 'application/json'
-    // });
+    var ajax = $.ajax('/users', {
+        type: 'POST',
+        data: JSON.stringify(user),
+        dataType: 'json',
+        contentType: 'application/json'
+    });
     siteUsers.users.push(user);
     console.log(this);
-    // ajax.done(this.getUser.bind(this));
+    ajax.done(this.getUser.bind(this));
 };
 
 var siteUsers = new Users();
