@@ -1,9 +1,81 @@
 $(document).ready(function() {
-	$('#par').html('<p>Test to see if client.js is working.</p>');
+	$('#par').html('<p>client.js is working.</p>');
 	$('#myBtn').click(function() {
-		$('.modal').modal('toggle');
+		$('.modal').modal('show');
+	});
+	$('.close').click(function() {
+		$('.modal').modal('hide');
+	});
+	$('#newAcctForm').submit(function(e) {
+		e.preventDefault();
+		submitNewAcctForm();
 	});
 });
+
+function submitNewAcctForm() {
+	var name = $('#name').val();
+	var username = $('#username').val();
+	var password = $('#password').val();
+	var password2 = $('#password2').val();
+	if(name === '') {
+		$('#formScrewUp').text('Please enter a name.').css('color', 'red');
+	}
+	else if(username === '') {
+		$('#formScrewUp').text('Please enter a username.').css('color', 'red');
+	}
+	else if(password === '') {
+		$('#formScrewUp').text('Please enter a password.').css('color', 'red');
+	}
+	else if(password2 === '') {
+		$('#formScrewUp').text('Please confirm password.').css('color', 'red');
+	}
+	else if(password !== password2) {
+		$('#formScrewUp').text('Passwords do not match.').css('color', 'red');
+	}
+	else if(checkUsernameRepeat(username) == false) {
+		$('#formScrewUp').text('Username already exists. If you already have an account, ' + 
+			'close this window, and login as an existing user. Otherwise, ' +
+			 'please choose a new username.').css('color', 'red');
+	}
+	else {
+		siteUsers.addUser(name, username, password);
+		var name = $('#name').val('');
+		var username = $('#username').val('');
+		var password = $('#password').val('');
+		var password2 = $('#password2').val('');
+		$('#formScrewUP').text('');
+		$('.modal').modal('hide');
+	}
+	function checkUsernameRepeat(name) {
+		for (var i=0; i<siteUsers.users.length; i++) {
+			if(name === siteUsers.users[i].username) {
+				return false;
+			}
+			else {
+				return true;
+			} 
+		}
+	}
+}
+
+var Users = function() {
+	this.users = [];
+}
+
+Users.prototype.addUser = function(name, username, password) {
+    var user = {'name':name, 'username': username, 'password': password};
+    // var ajax = $.ajax('/users', {
+    //     type: 'POST',
+    //     data: JSON.stringify(user),
+    //     dataType: 'json',
+    //     contentType: 'application/json'
+    // });
+    siteUsers.users.push(user);
+    console.log(this);
+    // ajax.done(this.getUser.bind(this));
+};
+
+var siteUsers = new Users();
 
 // mockUpcomingTrips.upcomingTrips.forEach(function(object) {
 // 	var area = object.area;

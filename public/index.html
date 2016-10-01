@@ -26,19 +26,20 @@
 			<div class="col-md-3"></div>
 			<div class="col-md-6" id="newAccount">
 				<p>New to bcskibuddy? Create an account <a id="myBtn" href="#myBtn">here</a>!</p>
-				<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+				<div class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 				  <div class="modal-dialog modal-sm" role="document">
 				    <div class="modal-content">
 					  <div class="modal-header">
 					    <span class="close">×</span>
-					    <h2>Please enter a username and password.</h2>
+					    <h2>Please enter a name, username, and password.</h2>
+					    <p id='formScrewUp'></p>
 					  </div>
 					  <div class="modal-body">
 					    <form id="newAcctForm">
 					    	<input type="text" placeholder="name" id="name">
 					    	<input type="text" placeholder="username" id="username">
 					    	<input type="text" placeholder="password" id="password">
-					    	<input type="text" placeholder="confirm password" id="password2">
+					    	<input type="text" placeholder="confirm password" id="password2"><br>
 					    	<input type="submit" id="newAcctSubmit">
 					    </form>
 					  </div>
