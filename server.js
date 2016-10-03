@@ -42,7 +42,9 @@ app.get('/user', function(req, res) {
 	res.status(200);
 });
 
-app.get('/users', function(req, res) {
+app.get('/users/:username', function(req, res) {
+	console.log(req.body);
+	console.log(req.params.username);
     Users.find({username: req.params.username}, function(err, items) {
         if (err) {
             return res.status(500).json({

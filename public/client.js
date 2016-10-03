@@ -37,13 +37,8 @@ function submitNewAcctForm() {
 	else if(password !== password2) {
 		$('#formScrewUp').text('Passwords do not match.').css('color', 'red');
 	}
-	else if(checkUsernameRepeat(username) == false) {
-		$('#formScrewUp').text('Username already exists. If you already have an account, ' + 
-			'close this window, and login as an existing user. Otherwise, ' +
-			 'please choose a new username.').css('color', 'red');
-	}
 	else {
-		siteUsers.addUser(name, username, password);
+		addNewUser(name, username, password);
 		$('#name').val('');
 		$('#username').val('');
 		$('#password').val('');
@@ -51,24 +46,10 @@ function submitNewAcctForm() {
 		$('#formScrewUp').text('');
 		$('.modal').modal('hide');
 	}
-	function checkUsernameRepeat(name) {
-		for (var i=0; i<siteUsers.users.length; i++) {
-			if(name === siteUsers.users[i].username) {
-				return false;
-			}
-			else {
-				return true;
-			} 
-		}
-	}
 }
 
-var Users = function() {
-	this.users = [];
-}
-
-Users.prototype.getUser = function(username) {
-	var ajax = $.ajax('/users/:' + username, {
+var getNewUser = function(userObj) {
+	var ajax = $.ajax('/users/' + userObj.username, {
         type: 'GET',
         dataType: 'json'
     }).done(function(data) {
@@ -76,7 +57,7 @@ Users.prototype.getUser = function(username) {
     });
 };
 
-Users.prototype.addUser = function(name, username, password) {
+var addNewUser = function(name, username, password) {
     var user = {'name':name, 'username': username, 'password': password};
     var ajax = $.ajax('/users', {
         type: 'POST',
@@ -84,12 +65,14 @@ Users.prototype.addUser = function(name, username, password) {
         dataType: 'json',
         contentType: 'application/json'
     });
-    siteUsers.users.push(user);
-    console.log(this);
-    ajax.done(this.getUser.bind(this));
+    ajax.done(getNewUser.bind(this));
 };
 
-var siteUsers = new Users();
+// else if(checkUsernameRepeat(username) == false) {
+// 	$('#formScrewUp').text('Username already exists. If you already have an account, ' + 
+// 		'close this window, and login as an existing user. Otherwise, ' +
+// 		 'please choose a new username.').css('color', 'red');
+// }
 
 // mockUpcomingTrips.upcomingTrips.forEach(function(object) {
 // 	var area = object.area;
