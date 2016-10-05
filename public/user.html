@@ -11,13 +11,14 @@
 <body>
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
+	  	  <p class="navbar-text navbar-center">Home Page</p>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu<span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenu"><span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <li><a href="#profile">Profile</a></li>
+	            <li><a id="profileBtn" href="#profileBtn">Profile</a></li>
 	            <li role="separator" class="divider"></li>
-	            <li><a href="#signOut">Sign Out</a></li>
+	            <li><a id="signOutBtn" href="/">Sign Out</a></li>
 	          </ul>
 	        </li>
 	      </ul>
@@ -29,9 +30,77 @@
 			<div class="col-md-6" id="existingAccount">
 				<p>This will be each individual's user page where all the magic happens.</p>
 				<p>Only way to exit this page will be to log off, or close the page.</p>
-				<div id="tripDisplay">
-					<ul id="tripInfo"></ul>
+				<div id="userTripDisplay">
+					<h1>Your Ski Trips</h1>
+					<p>These are the ski trips that you instigated.</p>
+					<ul id="userTripList">
+						<li>You do not have any upcoming trips planned by you.  Click <a id="tripModalBtn" href="#tripModalBtn">here</a> to create a new ski trip.</li>
+					</ul>
 				</div>
+				<div id="joinedTrips">
+					<h1>Trips You've Joined</h1>
+					<p>These are other trips that you've joined.</p>
+					<ul id="joinedTripList">
+						<li>You currently have not joined any trips. Search below for trips to join in your desired location.</li>
+					</ul>
+				</div>
+				<div id="tripsByLocation">
+					<h1>Upcoming Ski Trips</h1>
+					<p>Choose a location below to display and browse upcoming planned ski trips for that location.</p>
+					<ul id="otherTripList">
+						<li>...</li>
+					</ul>
+				</div>
+				<div class="modal fade" id="profileModal" data-backdrop="static" tabindex="-1" role="dialog">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">User Profile</h4>
+				      </div>
+				      <div class="modal-body" id="profileModalBody">
+				        <p>This will be a profile body mostly created in client. Clicking the "edit profile" button, your profile will be put into a form where if you save changes, it will direct to an update endpoint.</p>
+				        <ul>
+				        	<li id="profileName">Name</li>
+							<li id="profilePic">Picture</li>
+				        	<li id="profileLocation">Location</li>
+				        	<li id="profileExperience">Experience Level</li>
+				        	<li id="profileGear">Beacon, Shovel, Probe</li><br><br><hr>
+				        	<li id="deleteProfile"><a id="deleteAcctBtn" style="color:red" href="#deleteAcctBtn">Delete Account</a></li>
+				        </ul>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Edit Profile</button>
+				      </div>
+				    </div>
+				  </div>
+				</div><!-- /.modal -->
+				<div class="modal fade" id="createTripModal" data-backdrop="static" tabindex="-1" role="dialog">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">Create a trip by filling out the information below.</h4>
+				      </div>
+				      <div class="modal-body" id="profileModalBody">
+				        <p>Please enter the details below with as much accuracy as possible.</p>
+				        <form id="createTripForm">
+				        	<input id="tripLocation" type="input" placeholder="Location">
+							<input id="tripArea" type="input" placeholder="Planned ski area. (e.g. Little Cottonwood Canyon- Grizzly Gulch)">
+				        	<input id="tripDate" type="input" placeholder="Date">
+				        	<input id="tripTime" type="input" placeholder="Planned meeting time.">
+				        	<input id="tripDifficulty" type="input" placeholder="Difficulty">
+				        	<input id="tripComments" type="input" placeholder="Feel free to include any other necessary details. (e.g. Specific runs you're planning on, or comments about past trips to the same are, etc.)">
+				        </form>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Create Trip</button>
+				      </div>
+				    </div>
+				  </div>
+				</div><!-- /.modal -->
 			</div>
 			<div class="col-md-3"></div>
 		</div>

@@ -25,12 +25,12 @@
 		<div class="row" id="loginDiv">
 			<div class="col-md-3"></div>
 			<div class="col-md-6" id="newAccount">
-				<p>New to bcskibuddy? Create an account <a id="myBtn" href="#myBtn">here</a>!</p>
-				<div class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+				<p>New to bcskibuddy? Create an account <a id="newAccountBtn" href="#newAccountBtn">here</a>!</p>
+				<div id="newAccountModal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 				  <div class="modal-dialog modal-sm" role="document">
 				    <div class="modal-content">
 					  <div class="modal-header">
-					    <span class="close">×</span>
+					    <span class="close" id="closeNewAccountModal">×</span>
 					    <h2>Please enter a name, username, and password.</h2>
 					    <p id='formScrewUp'></p>
 					  </div>

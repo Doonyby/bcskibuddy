@@ -1,9 +1,9 @@
 $(document).ready(function() {
 	$('#par').html('<p>client.js is working.</p>');
 	$('#myBtn').click(function() {
-		$('.modal').modal('show');
+		$('#newAccountModal').modal('show');
 	});
-	$('.close').click(function() {
+	$('#closeNewAccountModal').click(function() {
 		$('#name').val('');
 		$('#username').val('');
 		$('#password').val('');
@@ -14,6 +14,12 @@ $(document).ready(function() {
 	$('#newAcctForm').submit(function(e) {
 		e.preventDefault();
 		submitNewAcctForm();
+	});
+	$('#profileBtn').click(function() {
+		$('#profileModal').modal('show');
+	});
+	$('#tripModalBtn').click(function() {
+		$('#createTripModal').modal('show');
 	});
 });
 
@@ -52,7 +58,7 @@ var getNewUser = function(userObj) {
 	var ajax = $.ajax('/users/' + userObj.username, {
         type: 'GET',
         dataType: 'json'
-    }).done(function(data) {
+    }).done(homePageSetUp(), function(data) {
     	console.log(data);
     });
 };
@@ -64,9 +70,12 @@ var addNewUser = function(name, username, password) {
         data: JSON.stringify(user),
         dataType: 'json',
         contentType: 'application/json'
-    });
-    ajax.done(getNewUser.bind(this));
+    }).done(getNewUser.bind(this));
 };
+
+function homePageSetUp(data) {
+	location.href = "/user";
+}
 
 // else if(checkUsernameRepeat(username) == false) {
 // 	$('#formScrewUp').text('Username already exists. If you already have an account, ' + 

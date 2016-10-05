@@ -13,6 +13,19 @@ var UserSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	residence: {
+		type: String
+	},
+	experienceLevel: {
+		type: String
+	},
+	gear: {
+		type: String
+	},
+	picture: {
+		data: Buffer,
+		contentType: String
 	}
 });
 
