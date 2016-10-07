@@ -28,7 +28,7 @@ var TripSchema = new mongoose.Schema({
 });
 
 var Trip = mongoose.model('Trip', TripSchema);
-model.exports = Trip;
+module.exports = Trip;
 
 // var mockUpcomingTrips = {
 // 	"upcomingTrips": [

@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 var Users = require('./models/user.js');
+var Trip = require('./models/trips.js');
+var fs = require('fs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use('/jquery', express.static('./node_modules/jquery/dist/'));
@@ -67,6 +69,33 @@ app.post('/users', function(req, res) {
             });
         }
         return res.status(201).json(item);
+    });
+});
+
+app.put('/users/:id', function(req, res) {
+    if (req.params.id !== req.body._id) {
+        return res.status(400).send();
+    } 
+    Users.findOne({_id: req.params.id}, function(err, item){
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        item.residence = req.body.name;
+        item.experienceLevel = req.body.name;
+        item.gear = req.body.name;
+        item.picture.data = req.body.name;
+        item.picture.contentType = req.body.name;
+        item.email = req.body.name;
+        item.save(function(err) {
+            if (err) {
+                return res.status(500).send(err);
+            } else {
+                res.status(201).json(item);
+            }
+        });
     });
 });
 
