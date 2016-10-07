@@ -76,24 +76,34 @@ function submitNewAcctForm() {
 // 	console.log(userObj);
 // }
 
+// function newUserQuestions(obj) {
+// 	console.log('before /user');
+// 	location.href = '/user';
+// 	console.log('after /user');
+// 	var newUserObj = obj;
+// 	console.log($('#userSetUpModal'));
+// 	$('#userSetUpModal').modal('show');
+// 	console.log('after set up modal called');
+// 	$('#userSetUpButton').click(function() {
+// 		var haveGear = "No";
+// 		if($('#gearCheck').val() == "yes") {
+// 			haveGear = "Yes"
+// 		}
+// 		newUserObj.residence = $('#selectLocation').val();
+// 		newUserObj.experienceLevel = $('#experienceLevel').val();
+// 		newUserObj.gear = haveGear;
+// 		newUserObj.email = $('#newUserEmail').val();
+// 		$('#userSetUpModal').modal('hide');
+// 		console.log(newUserObj);
+// 	});
+// }
+
 function newUserQuestions(obj) {
-	console.log('before /user');
-	location.href = '/user';
-	console.log('after /user');
-	var newUserObj = obj;
-	$('#userSetUpModal').modal('show');
-	console.log('after set up modal called');
-	$('#userSetUpButton').click(function() {
-		var haveGear = "No";
-		if($('#gearCheck').val() == "yes") {
-			haveGear = "Yes"
-		}
-		newUserObj.residence = $('#selectLocation').val();
-		newUserObj.experienceLevel = $('#experienceLevel').val();
-		newUserObj.gear = haveGear;
-		newUserObj.email = $('#newUserEmail').val();
-		$('#userSetUpModal').modal('hide');
-		console.log(newUserObj);
+	var ajax = $.ajax('/user', {
+		type: 'GET'
+	}).done(function() {
+		console.log('finished');
+		$('#userSetUpModal').modal('show');
 	});
 }
 

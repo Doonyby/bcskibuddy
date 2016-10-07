@@ -1,10 +1,11 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 var Users = require('./models/user.js');
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use('/jquery', express.static('./node_modules/jquery/dist/'));
 app.use('/bootstrap', express.static('./node_modules/bootstrap/dist/js/'));
