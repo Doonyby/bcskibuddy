@@ -55,9 +55,13 @@ app.get('/users/:username', function(req, res) {
 
 app.post('/users', function(req, res) {
     Users.create({name: req.body.name, username: req.body.username, password: req.body.password}, function(error, item) {
-        console.log(error);
-        if (error) {
-            return res.status(500).json({
+        if (error && error.code == 11000) {
+        	return res.status(500).json({
+                message: 'Username already exists'
+            });
+        }
+        else if (error) {
+        	return res.status(500).json({
                 message: 'Internal Server Error'
             });
         }
