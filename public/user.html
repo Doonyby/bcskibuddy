@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript" src="client.js"></script>
+	<script type="text/javascript" src="home.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -51,21 +51,42 @@
 						<li>...</li>
 					</ul>
 				</div>
+				<!-- sign in modal -->
+				<div id="oldAccountModal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+				  <div class="modal-dialog modal-sm" role="document">
+				    <div class="modal-content">
+					  <div class="modal-header">
+					    <span class="close" id="closeOldAccountModal">×</span>
+					    <h2>Please enter your username and password.</h2>
+					    <p id='signInFormScrewUp'></p>
+					  </div>
+					  <div class="modal-body">
+					    <form id="oldAcctForm">
+					    	<input type="text" placeholder="username" id="existingUsername">
+					    	<input type="password" placeholder="password" id="existingPassword"><br>
+					    	<input type="submit" id="oldAcctSubmit">
+					    </form>
+					  </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- /sign in modal -->
 				<!-- new user set up modal -->
-				<div class="modal fade" id="userSetUpModal" data-backdrop="static" tabindex="-1" role="dialog">
+				<div class="modal fade" id="userSetUpModal" data-backdrop="static" tabindex="-1" role="dialog" style="overflow:auto">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				        <h4 class="modal-title" id="userSetUpTitle"></h4>
 				      </div>
-				      <div hidden class="modal-body" id="modProfileForm">
+				      <div class="modal-body" id="modProfileForm">
 				      	<p>Please help us get to know you a little more by answering the questions below, and uploading a photo if you wish.</p>
+				      	<p id='setUpFormScrewUp'></p>
 				      	<form>
 						  <div class="form-group">
 						    <label>Upload a picture.</label>
-						    <input type="file" id="modPicture">
-						    <img src="..." class="img-responsive img-thumbnail" id="userPic" alt="Responsive image">
+						    <input type="file" id="modPicture" onchange="readURL(this);">
+						    <img src="./images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="userPic" alt="Responsive image" width="140">
 						  </div>
 						  <div class="form-group">
 							<label>Please select the location that is closest to where you live.</label>
@@ -107,7 +128,8 @@
 				      </div>
 				    </div>
 				  </div>
-				</div><!-- /new user set up modal -->
+				</div>
+				<!-- /new user set up modal -->
 				<!-- profile modal, edit form, save changes -->
 				<div class="modal fade" id="profileModal" data-backdrop="static" tabindex="-1" role="dialog">
 				  <div class="modal-dialog" role="document">
@@ -118,6 +140,7 @@
 				      </div>
 				      <div class="modal-body" id="profileModalBody">
 				        <p>This will be a profile body mostly created in client. Clicking the "edit profile" button, your profile will be put into a form where if you save changes, it will direct to an update endpoint.</p>
+				        <p id='editProfileFormScrewUp'></p>
 				        <ul id="profileList">
 				        	<li id="profileName">Name</li>
 							<li id="profilePic">Picture</li>

@@ -51,76 +51,13 @@
 				  </div>
 				</div>
 				<!-- /sign up modal -->
-				<!-- new user set up modal -->
-				<div class="modal fade" id="userSetUpModal" data-backdrop="static" tabindex="-1" role="dialog" style="overflow:auto">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="userSetUpTitle"></h4>
-				      </div>
-				      <div class="modal-body" id="modProfileForm">
-				      	<p>Please help us get to know you a little more by answering the questions below, and uploading a photo if you wish.</p>
-				      	<form>
-						  <div class="form-group">
-						    <label>Upload a picture.</label>
-						    <input type="file" id="modPicture" onchange="readURL(this);">
-						    <img src="./images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="userPic" alt="Responsive image" width="140">
-						  </div>
-						  <div class="form-group">
-							<label>Please select the location that is closest to where you live.</label>
-						    <select class="form-control" id="selectLocation">
-						      <option value="" disabled selected hidden>Please Choose...</option>
-							  <option value="Logan">Logan</option>
-							  <option value="Ogden">Ogden</option>
-							  <option value="Salt Lake City">Salt Lake City</option>
-							  <option value="Provo">Provo</option>
-							  <option value="Uintas">Uintas</option>
-							  <option value="Skyline">Skyline</option>
-							  <option value="Moab">Moab</option>
-							  <option value="Abajos">Abajos</option>
-							</select>
-						  </div>
-						  <div class="form-group">
-						    <label>What is your email address? (this will be used to send you messages from the group included in your trips when logged out of your account)</label>
-						    <input type="email" class="form-control" id="newUserEmail" placeholder="Email">
-						  </div>
-						  <div class="form-group">
-							<label>What is your experience level in back country skiing?</label>
-						    <select class="form-control" id="experienceLevel">
-						      <option value="" disabled selected hidden>Please Choose...</option>
-						      <option value="No Experience">No Experience</option>
-							  <option value="Beginner">Beginner</option>
-							  <option value="Intermediate">Intermediate</option>
-							  <option value="Experienced">Experienced</option>
-							</select>
-						  </div>
-						  <div class="checkbox">
-						    <label>
-						      <input type="checkbox" id="gearCheck" value="yes"><b>I have a beacon, shovel, and probe!</b>
-						    </label>
-						  </div>
-						</form>
-				      </div>
-				      <div class="modal-footer" id="editFooter">
-				        <button type="button" class="btn btn-primary" id="userSetUpBtn">Continue to Home Page</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<!-- /new user set up modal -->
 			</div>
 			<div class="col-md-3"></div>
 		</div>
 		<div class="row">
 			<div class="col-md-3"></div>
 			<div class="col-md-6" id="existingAccount">
-				<p>If you already have an account, please login below.</p>
-				<form>
-					<input type="text" placeholder="username" id="username">
-			    	<input type="text" placeholder="password" id="password">
-			    	<input type="submit">
-				</form>
+				<p>If you already have an account, please login <a id="oldAccountBtn" href="#oldAccountBtn">here</a>!</p>
 			</div>
 			<div class="col-md-3"></div>
 		</div>

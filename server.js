@@ -46,6 +46,7 @@ app.get('/user', function(req, res) {
 });
 
 app.get('/users/:username', function(req, res) {
+    console.log(req.body);
     Users.find({username: req.params.username}, function(err, items) {
         if (err) {
             return res.status(500).json({
@@ -55,6 +56,18 @@ app.get('/users/:username', function(req, res) {
         res.json(items);
     });
 });
+
+    // .get(function(req, res) {
+    //     Users.find({username: req.params.username}, function(err, items) {
+    //     if (err) {
+    //         return res.status(500).json({
+    //             message: 'Internal Server Error'
+    //         });
+    //     }
+    //     res.json(items);
+    // });
+
+
 
 app.post('/users', function(req, res) {
     Users.create({name: req.body.name, username: req.body.username, password: req.body.password}, function(error, item) {
