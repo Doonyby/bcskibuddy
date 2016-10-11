@@ -2,7 +2,11 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
 var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
+var passport = require('passport');
+var BasicStrategy = require('passport-http').BasicStrategy;
 var config = require('./config');
 var Users = require('./models/user.js');
 var Trip = require('./models/trips.js');
@@ -47,7 +51,7 @@ app.get('/user', function(req, res) {
 
 app.get('/users/:username', function(req, res) {
     console.log(req.body);
-    Users.find({username: req.params.username}, function(err, items) {
+    Users.findOne({username: req.params.username}, function(err, items) {
         if (err) {
             return res.status(500).json({
                 message: 'Internal Server Error'
@@ -57,31 +61,118 @@ app.get('/users/:username', function(req, res) {
     });
 });
 
-    // .get(function(req, res) {
-    //     Users.find({username: req.params.username}, function(err, items) {
-    //     if (err) {
-    //         return res.status(500).json({
-    //             message: 'Internal Server Error'
-    //         });
-    //     }
-    //     res.json(items);
-    // });
-
-
-
-app.post('/users', function(req, res) {
-    Users.create({name: req.body.name, username: req.body.username, password: req.body.password}, function(error, item) {
-        if (error && error.code == 11000) {
-        	return res.status(500).json({
-                message: 'Username already exists'
+var strategy = new BasicStrategy(function(username, password, callback) {
+    User.findOne({username: username}, function(err, user) {
+        if(err) {
+            callback(err);
+            return;
+        }
+        if(!user) {
+            return callback(null, false, {
+                message: "Incorrect username"
             });
         }
-        else if (error) {
-        	return res.status(500).json({
-                message: 'Internal Server Error'
+        user.validatePassword(password, function(err, isValid) {
+            if (err) {
+                return callback(err);
+            }
+            if (!isValid) {
+                return callback(null, false, {
+                    message: "Incorrect password"
+                });
+            }
+            return callback(null, user);
+        });
+    });
+});
+
+passport.use(strategy);
+app.use(passport.initialize());
+
+app.get('/hidden', passport.authenticate('basic', {session: false}), function(req, res) {
+    res.json({
+        message: 'Luke... I am your father'
+    });
+});
+
+app.post('/users', jsonParser, function(req, res) {
+    if (!req.body) {
+        return res.status(400).json({
+            message: "No request body"
+        });
+    }
+    if (!('username' in req.body)) {
+        return res.status(422).json({
+            message: "Missing field: username"
+        });
+    }
+    var username = req.body.username;
+    if (typeof username !== 'string') {
+        return res.status(422).json({
+            message: "Incorrect field type: username"
+        });
+    }
+    username = username.trim();
+    if (username == '') {
+        return res.status(422).json({
+            message: "Incorrect field length: username"
+        });
+    }
+    if (!('password' in req.body)) {
+        return res.status(422).json({
+            message: "Missing field: password"
+        });
+    }
+    var password = req.body.password;
+    if (typeof password !== 'string') {
+        return res.status(422).json({
+            message: "Incorrect field type: password"
+        });
+    }
+    password = password.trim();
+    if (password == '') {
+        return res.status(422).json({
+            message: "Incorrect field length: password"
+        });
+    }
+    var name = req.body.name;
+    name = name.trim();
+    if (name == '') {
+        return res.status(422).json({
+            message: "Missing field: name"
+        });
+    }
+    bcrypt.genSalt(10, function(err, salt) {
+        if (err) {
+            return res.status(500).json({
+                message: "Internal server error"
             });
         }
-        return res.status(201).json(item);
+        bcrypt.hash(password, salt, function(err, hash) {
+            if (err) {
+                return res.status(500).json({
+                    message: "Internal server error"
+                });
+            }
+            var user = new Users({
+                name: name,
+                username: username,
+                password: hash
+            });
+            user.save(function(err) {
+            if (err && err.code == 11000) {
+                return res.status(500).json({
+                        message: 'Username already exists'
+                    });
+                }
+                else if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+                return res.status(201).json({});
+            });
+        });
     });
 });
 
@@ -96,12 +187,12 @@ app.put('/users/:id', function(req, res) {
                 message: 'Internal Server Error'
             });
         }
-        item.residence = req.body.name;
-        item.experienceLevel = req.body.name;
-        item.gear = req.body.name;
-        item.picture.data = req.body.name;
-        item.picture.contentType = req.body.name;
-        item.email = req.body.name;
+        item.residence = req.body.residence;
+        item.experienceLevel = req.body.experienceLevel;
+        item.gear = req.body.gear;
+        item.picture.data = req.body.picture.data;
+        item.picture.contentType = req.body.picture.contentType;
+        item.email = req.body.email;
         item.save(function(err) {
             if (err) {
                 return res.status(500).send(err);
@@ -109,6 +200,18 @@ app.put('/users/:id', function(req, res) {
                 res.status(201).json(item);
             }
         });
+    });
+});
+
+app.delete('/users/:id', function(req, res) {
+    var id = req.params.id
+    Users.findByIdAndRemove(id, function(err, item) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        res.status(201).json(item);
     });
 });
 
