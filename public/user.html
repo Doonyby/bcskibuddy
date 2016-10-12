@@ -82,18 +82,18 @@
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				        <h4 class="modal-title" id="userSetUpTitle"></h4>
 				      </div>
-				      <div class="modal-body" id="modProfileForm">
+				      <div class="modal-body" id="newUserSetUpForm">
 				      	<p>Please help us get to know you a little more by answering the questions below, and uploading a photo if you wish.</p>
 				      	<p id='setUpFormScrewUp'></p>
 				      	<form>
 						  <div class="form-group">
 						    <label>Upload a picture.</label>
-						    <input type="file" id="modPicture" onchange="readURL(this);">
-						    <img src="images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="userPic" alt="Responsive image" width="140">
+						    <input type="file" id="setPicture" onchange="readURL(this);">
+						    <img src="images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="setUserPic" alt="Responsive image" width="140">
 						  </div>
 						  <div class="form-group">
 							<label>Please select the location that is closest to where you live.</label>
-						    <select class="form-control" id="selectLocation">
+						    <select class="form-control" id="setLocation">
 						      <option value="" disabled selected hidden>Please Choose...</option>
 							  <option value="Logan">Logan</option>
 							  <option value="Ogden">Ogden</option>
@@ -107,11 +107,11 @@
 						  </div>
 						  <div class="form-group">
 						    <label>What is your email address? (this will be used to send you messages from the group included in your trips when logged out of your account)</label>
-						    <input type="email" class="form-control" id="newUserEmail" placeholder="Email">
+						    <input type="email" class="form-control" id="setUserEmail" placeholder="Email">
 						  </div>
 						  <div class="form-group">
 							<label>What is your experience level in back country skiing?</label>
-						    <select class="form-control" id="experienceLevel">
+						    <select class="form-control" id="setExperienceLevel">
 						      <option value="" disabled selected hidden>Please Choose...</option>
 						      <option value="No Experience">No Experience</option>
 							  <option value="Beginner">Beginner</option>
@@ -121,12 +121,12 @@
 						  </div>
 						  <div class="checkbox">
 						    <label>
-						      <input type="checkbox" id="gearCheck" value="yes"><b>I have a beacon, shovel, and probe!</b>
+						      <input type="checkbox" id="setGearCheck"><b>I have a beacon, shovel, and probe!</b>
 						    </label>
 						  </div>
 						</form>
 				      </div>
-				      <div class="modal-footer" id="editFooter">
+				      <div class="modal-footer" id="newUserSetUpFooter">
 				        <button type="button" class="btn btn-primary" id="userSetUpBtn">Continue to Home Page</button>
 				      </div>
 				    </div>
@@ -146,6 +146,8 @@
 				        <p id='editProfileFormScrewUp'></p>
 				        <ul id="profileList">
 				        	<li id="profileName">Name</li>
+				        	<li id="username">Username</li>
+				        	<li id="email">Email</li>
 							<li id="profilePic">Picture</li>
 				        	<li id="profileLocation">Location</li>
 				        	<li id="profileExperience">Experience Level</li>
@@ -160,13 +162,21 @@
 						    <input type="text" class="form-control" id="modName" placeholder="Name">
 						  </div>
 						  <div class="form-group">
-						    <label>Upload a Picture</label>
-						    <input type="file" id="modPicture">
-						    <img src="..." class="img-responsive img-thumbnail" id="userPic" alt="Responsive image">
+						    <label>Username</label>
+						    <input type="text" class="form-control" id="modUsername" placeholder="Username">
+						  </div>
+						  <div class="form-group">
+						    <label>Email Address</label>
+						    <input type="email" class="form-control" id="modEmail" placeholder="Email">
+						  </div>
+						  <div class="form-group">
+						    <label>Upload a new picture.</label>
+						    <input type="file" id="modPicture" onchange="readURL(this);">
+						    <img src="images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="modUserPic" alt="Responsive image" width="140">
 						  </div>
 						  <div class="form-group">
 							<label>Location</label>
-						    <select class="form-control">
+						    <select class="form-control" id="modLocation">
 						      <option value="" disabled selected hidden>Please Choose...</option>
 							  <option value="Logan">Logan</option>
 							  <option value="Ogden">Ogden</option>
@@ -179,12 +189,8 @@
 							</select>
 						  </div>
 						  <div class="form-group">
-						    <label>Email Address</label>
-						    <input type="email" class="form-control" id="modEmail" placeholder="Email">
-						  </div>
-						  <div class="form-group">
 							<label>Experience Level</label>
-						    <select class="form-control">
+						    <select class="form-control" id="modExperienceLevel">
 						      <option value="" disabled selected hidden>Please Choose...</option>
 						      <option value="No Experience">No Experience</option>
 							  <option value="Beginner">Beginner</option>
@@ -194,7 +200,7 @@
 						  </div>
 						  <div class="checkbox">
 						    <label>
-						      <input type="checkbox"><b>I have a beacon, shovel, and probe!</b>
+						      <input type="checkbox" id="modGearCheck"><b>I have a beacon, shovel, and probe!</b>
 						    </label>
 						  </div>
 						</form>
