@@ -16,7 +16,7 @@ $(document).ready(function() {
 });
 
 var CurrentUser = function() {
-	this.data = {}
+	this.specs = {};
 	this.tripsPlanned = [];
 	this.tripsJoined = [];
 }
@@ -31,9 +31,9 @@ CurrentUser.prototype.getUser = function(user) {
 	    $('#existingUsername').val('');
 		$('#existingPassword').val('');
 		$('#oldAccountModal').modal('hide');
-		that.data = data;
-		console.log(that.data);
-		if (!that.data.email) {
+		that.specs = data;
+		console.log(that.specs);
+		if (!that.specs.email) {
 	    	that.editUser(data);
 	    }
 	    else {
@@ -71,14 +71,14 @@ CurrentUser.prototype.updateUser = function(user) {
 		contentType: 'application/json'
 	}).done(function() {
 		console.log('completed a put');
-		console.log(that.data);
+		console.log(that.specs);
 		that.buildHomePage();
 	}).fail(function() {
 		console.log('there is an error on put');
 	});
 }
 CurrentUser.prototype.deleteAccount = function() {
-	var ajax = $.ajax('/users/' + this.data._id, {
+	var ajax = $.ajax('/users/' + this.specs._id, {
         type: 'DELETE',
         dataType: 'json'
     }).done(function() {
@@ -89,15 +89,15 @@ CurrentUser.prototype.deleteAccount = function() {
     });
 }
 CurrentUser.prototype.buildHomePage = function() {
-	$('#navTitle').text(this.data.name + "'s Home Page");
-	$('#brandPic').attr('src', this.data.picture.data);
-	$('#profileName').text("Name: " + this.data.name);
-	$('#username').text("Username: " + this.data.username);	
-	$('#email').text("Email: " + this.data.email);
-	$('#profilePic').text("Picture: " + this.data.picture.data);
-	$('#profileLocation').text("Location: " + this.data.residence);
-	$('#profileExperience').text("Experience level: " + this.data.experienceLevel);
-	$('#profileGear').text("Beacon, Shovel, and Probe: " + this.data.gear);
+	$('#navTitle').text(this.specs.name + "'s Home Page");
+	$('#brandPic').attr('src', this.specs.picture.data);
+	$('#profileName').text("Name: " + this.specs.name);
+	$('#username').text("Username: " + this.specs.username);	
+	$('#email').text("Email: " + this.specs.email);
+	$('#profilePic').text("Picture: " + this.specs.picture.data);
+	$('#profileLocation').text("Location: " + this.specs.residence);
+	$('#profileExperience').text("Experience level: " + this.specs.experienceLevel);
+	$('#profileGear').text("Beacon, Shovel, and Probe: " + this.specs.gear);
 }
 // CurrentUser.prototype.displayTrips = function() {
 // 	mockUpcomingTrips.upcomingTrips.forEach(function(object) {
@@ -130,6 +130,23 @@ function currentUserControl(user) {
 	});
 	$('#saveProfileBtn').click(function() {
 		console.log('saving new profile');
+		currentUser.specs.name = $('#modName').val();
+		currentUser.specs.email = $('#modEmail').val();
+		currentUser.specs.picture.data = './public/' + $('#modUserPic').attr('src');
+		currentUser.specs.picture.contentType = "image/png";
+		currentUser.specs.residence = $('#modLocation').val();
+		currentUser.specs.experienceLevel = $('#modExperienceLevel').val();
+		var haveGear = "No";
+		if($('#modGearCheck').val() === true) {
+			haveGear = "Yes";
+		}
+		currentUser.specs.gear = haveGear;
+		currentUser.updateUser(currentUser.specs);
+		currentUser.buildHomePage();
+		$('#modProfileForm').hide();
+		$('#saveFooter').hide();
+		$('#profileModalBody').show();
+		$('#editFooter').show();
 	});
 	$('#tripModalBtn').click(function() {
 		$('#createTripModal').modal('show');
