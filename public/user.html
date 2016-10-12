@@ -11,10 +11,13 @@
 <body>
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
-	  	  <p class="navbar-text navbar-center" id="navTitle"></p>
+	  	  <div class="navbar-header">
+		      <img alt="Brand" src="" id='brandPic'>
+		  </div>
+		  <p class="navbar-text navbar-center" id="navTitle"></p>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenu"><span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenu">Menu <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
 	            <li><a id="profileBtn" href="#profileBtn">Profile</a></li>
 	            <li role="separator" class="divider"></li>
@@ -86,7 +89,7 @@
 						  <div class="form-group">
 						    <label>Upload a picture.</label>
 						    <input type="file" id="modPicture" onchange="readURL(this);">
-						    <img src="./images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="userPic" alt="Responsive image" width="140">
+						    <img src="images/Portrait_placeholder.png" class="img-responsive img-thumbnail" id="userPic" alt="Responsive image" width="140">
 						  </div>
 						  <div class="form-group">
 							<label>Please select the location that is closest to where you live.</label>

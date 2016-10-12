@@ -24,12 +24,13 @@ var CurrentUser = function(data) {
 	this.residence = '';
 	this.experienceLevel = '';
 	this.gear = '';
-	this.pictur = '';
-	this.tripsPlanned = null;
-	this.tripsJoined = null;
+	this.picture = '';
+	this.tripsPlanned = [];
+	this.tripsJoined = [];
 }
 CurrentUser.prototype.buildHomePage = function() {
 	$('#navTitle').text(this.name + "'s Home Page");
+	$('#brandPic').attr('src', this.picture);
 }
 CurrentUser.prototype.deleteAccount = function() {
 	var ajax = $.ajax('/users/' + this.id, {
@@ -42,6 +43,42 @@ CurrentUser.prototype.deleteAccount = function() {
     	console.log('account not deleted');
     });
 }
+CurrentUser.prototype.updateUser = function(user) {
+	var that = this;
+	var ajax = $.ajax('/users/' + user._id, {
+		type: 'PUT',
+		data: JSON.stringify(user),
+		dataType: 'json',
+		contentType: 'application/json'
+	}).done(function() {
+		console.log('completed a put');
+		that.buildHomePage();
+	}).fail(function() {
+		console.log('there is an error on put');
+	});
+}
+CurrentUser.prototype.editUser = function(user) {
+	$('#userSetUpModal').modal('show');
+	$('#userSetUpTitle').text('Hi ' + user.name + '! Welcome to BCskibuddy!!!');
+	var editUser = user;
+	editUser.picture = {};
+	var that = this;
+	$('#userSetUpBtn').click(function() {
+		var haveGear = "No";
+		if($('#gearCheck').val() == "yes") {
+			haveGear = "Yes"
+		}
+		editUser.picture.data = './public/' + $('#userPic').attr('src');
+		editUser.picture.contentType = "image/png";
+		editUser.residence = $('#selectLocation').val();
+		editUser.experienceLevel = $('#experienceLevel').val();
+		editUser.gear = haveGear;
+		editUser.email = $('#newUserEmail').val();
+		$('#userSetUpModal').modal('hide');
+		that.updateUser(editUser);
+	});
+}
+
 CurrentUser.prototype.editAccount = function() {
 
 }
@@ -59,8 +96,15 @@ CurrentUser.prototype.editAccount = function() {
 // }
 
 function currentUserControl(data) {
-	var currentUser = new CurrentUser(data)
-    currentUser.buildHomePage();
+	var currentUser = new CurrentUser(data);
+	console.log(currentUser);
+    if (!currentUser.email) {
+    	currentUser.editUser(data);
+    }
+    else {
+    	currentUser.buildHomePage();
+    }
+    
     $('#deleteAcctBtn').click(function() {
 		currentUser.deleteAccount();
 	});
@@ -91,48 +135,49 @@ var getUser = function(user) {
 		dataType: 'json',
 		contentType: 'application/json'
     }).done(function(data) {
-    	if (!data.email) {
-    		console.log('no email!!!');
-    		console.log(data);
-    		$('#existingUsername').val('');
-			$('#existingPassword').val('');
-    		$('#oldAccountModal').modal('hide');
-    		newUserQuestions(data);
-    	}
-    	else {
-    		console.log('has email!');
-    		$('#existingUsername').val('');
-			$('#existingPassword').val('');
-    		$('#oldAccountModal').modal('hide');
-    		currentUserControl(data);
-    	}
+	    $('#existingUsername').val('');
+		$('#existingPassword').val('');
+		$('#oldAccountModal').modal('hide');
+		currentUserControl(data);
+   //  	if (!data.email) {
+   //  		console.log('no email!!!');
+   //  		$('#existingUsername').val('');
+			// $('#existingPassword').val('');
+   //  		$('#oldAccountModal').modal('hide');
+   //  		newUserQuestions(data);
+   //  	}
+   //  	else {
+   //  		console.log('has email!');
+   //  		$('#existingUsername').val('');
+			// $('#existingPassword').val('');
+   //  		$('#oldAccountModal').modal('hide');
+   //  		currentUserControl(data);
+   //  	}
     });
 };
 
-function newUserQuestions(obj) {
-	$('#userSetUpModal').modal('show');
-	$('#userSetUpTitle').text('Hi ' + obj.name + '! Welcome to BCskibuddy!!!');
-	var newUserObj = obj;
-	newUserObj.picture = {};
-	$('#userSetUpBtn').click(function() {
-		var haveGear = "No";
-		if($('#gearCheck').val() == "yes") {
-			haveGear = "Yes"
-		}
-		newUserObj.picture.data = $('#userPic').attr('src');
-		newUserObj.picture.contentType = "image/png";
-		newUserObj.residence = $('#selectLocation').val();
-		newUserObj.experienceLevel = $('#experienceLevel').val();
-		newUserObj.gear = haveGear;
-		newUserObj.email = $('#newUserEmail').val();
-		$('#userSetUpModal').modal('hide');
-		console.log(newUserObj);
-		editUser(newUserObj);
-	});
-}
+// function newUserQuestions(obj) {
+// 	$('#userSetUpModal').modal('show');
+// 	$('#userSetUpTitle').text('Hi ' + obj.name + '! Welcome to BCskibuddy!!!');
+// 	var newUserObj = obj;
+// 	newUserObj.picture = {};
+// 	$('#userSetUpBtn').click(function() {
+// 		var haveGear = "No";
+// 		if($('#gearCheck').val() == "yes") {
+// 			haveGear = "Yes"
+// 		}
+// 		newUserObj.picture.data = './public/' + $('#userPic').attr('src');
+// 		newUserObj.picture.contentType = "image/png";
+// 		newUserObj.residence = $('#selectLocation').val();
+// 		newUserObj.experienceLevel = $('#experienceLevel').val();
+// 		newUserObj.gear = haveGear;
+// 		newUserObj.email = $('#newUserEmail').val();
+// 		$('#userSetUpModal').modal('hide');
+// 		editUser(newUserObj);
+// 	});
+// }
 
 function readURL(input) {
-	console.log(input.files);
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
@@ -144,18 +189,18 @@ function readURL(input) {
     }
 }
 
-function editUser(newUserObj) {
-	var user = newUserObj;
-	var ajax = $.ajax('/users/' + user._id, {
-		type: 'PUT',
-		data: JSON.stringify(user),
-		dataType: 'json',
-		contentType: 'application/json'
-	}).done(function() {
-		console.log('completed a put');
-	}).fail(function() {
-		console.log('there is an error on put');
-	});
-}
+// function editUser(newUserObj) {
+// 	var user = newUserObj;
+// 	var ajax = $.ajax('/users/' + user._id, {
+// 		type: 'PUT',
+// 		data: JSON.stringify(user),
+// 		dataType: 'json',
+// 		contentType: 'application/json'
+// 	}).done(getUser.bind(this), function() {
+// 		console.log('completed a put');
+// 	}).fail(function() {
+// 		console.log('there is an error on put');
+// 	});
+// }
 
 

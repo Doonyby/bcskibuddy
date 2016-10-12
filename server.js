@@ -190,7 +190,7 @@ app.put('/users/:id', function(req, res) {
         item.residence = req.body.residence;
         item.experienceLevel = req.body.experienceLevel;
         item.gear = req.body.gear;
-        item.picture.data = req.body.picture.data;
+        item.picture.data = fs.readFileSync(req.body.picture.data);
         item.picture.contentType = req.body.picture.contentType;
         item.email = req.body.email;
         item.save(function(err) {
