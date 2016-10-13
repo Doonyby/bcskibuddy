@@ -34,39 +34,63 @@ CurrentUser.prototype.getUser = function(user) {
 		that.specs = data;
 		console.log(that.specs);
 		if (!that.specs.email) {
-	    	that.editUser(data);
+	    	that.editUser();
 	    }
 	    else {
 	    	that.buildHomePage();
 	    }
     });
 };
-CurrentUser.prototype.editUser = function(user) {
+CurrentUser.prototype.editUser = function() {
 	$('#userSetUpModal').modal('show');
-	$('#userSetUpTitle').text('Hi ' + user.name + '! Welcome to BCskibuddy!!!');
-	var editUser = user;
-	editUser.picture = {};
+	$('#userSetUpTitle').text('Hi ' + this.specs.name + '! Welcome to BCskibuddy!!!');
+	this.specs.picture = {};
 	var that = this;
 	$('#userSetUpBtn').click(function() {
-		var haveGear = "No";
-		if($('#setGearCheck').val() == true) {
-			haveGear = "Yes";
+		var gearCheck = 'No';
+		if ($('#setGearCheck').prop('checked')) {
+			gearCheck = 'Yes';
 		}
-		editUser.picture.data = './public/' + $('#setUserPic').attr('src');
-		editUser.picture.contentType = "image/png";
-		editUser.residence = $('#setLocation').val();
-		editUser.experienceLevel = $('#setExperienceLevel').val();
-		editUser.gear = haveGear;
-		editUser.email = $('#setUserEmail').val();
+		that.specs.picture.data = './public/' + $('#setUserPic').attr('src');
+		that.specs.picture.contentType = "image/jpg";
+		that.specs.residence = $('#setLocation').val();
+		that.specs.experienceLevel = $('#setExperienceLevel').val();
+		that.specs.gear = gearCheck;
+		that.specs.email = $('#setUserEmail').val();
 		$('#userSetUpModal').modal('hide');
-		that.updateUser(editUser);
+		that.updateUser();
 	});
 }
-CurrentUser.prototype.updateUser = function(user) {
+CurrentUser.prototype.editUserProfile = function() {
 	var that = this;
-	var ajax = $.ajax('/users/' + user._id, {
+	$('#profileModalBody').hide();
+	$('#editFooter').hide();
+	$('#modProfileForm').show();
+	$('#saveFooter').show();
+	$('#saveProfileBtn').click(function() {
+		that.specs.name = $('#modName').val();
+		that.specs.email = $('#modEmail').val();
+		that.specs.picture.data = './public/' + $('#modUserPic').attr('src');
+		that.specs.picture.contentType = "image/png";
+		that.specs.residence = $('#modLocation').val();
+		that.specs.experienceLevel = $('#modExperienceLevel').val();
+		var gearCheck = 'No';
+		if ($('#modGearCheck').prop('checked')) {
+			gearCheck = 'Yes';
+		}
+		that.specs.gear = gearCheck;
+		that.updateUser();
+		$('#modProfileForm').hide();
+		$('#saveFooter').hide();
+		$('#profileModalBody').show();
+		$('#editFooter').show();
+	});
+}
+CurrentUser.prototype.updateUser = function() {
+	var that = this;
+	var ajax = $.ajax('/users/' + that.specs._id, {
 		type: 'PUT',
-		data: JSON.stringify(user),
+		data: JSON.stringify(that.specs),
 		dataType: 'json',
 		contentType: 'application/json'
 	}).done(function() {
@@ -90,7 +114,7 @@ CurrentUser.prototype.deleteAccount = function() {
 }
 CurrentUser.prototype.buildHomePage = function() {
 	$('#navTitle').text(this.specs.name + "'s Home Page");
-	$('#brandPic').attr('src', this.specs.picture.data);
+	$('#brandPic').attr('src', 'data:image/jpg;base64,' + this.specs.picture.data.toString('base64'));
 	$('#profileName').text("Name: " + this.specs.name);
 	$('#username').text("Username: " + this.specs.username);	
 	$('#email').text("Email: " + this.specs.email);
@@ -121,33 +145,15 @@ function currentUserControl(user) {
 	});
 	$('#profileBtn').click(function() {
 		$('#profileModal').modal('show');
-	});
-	$('#editProfileBtn').click(function() {
-		$('#profileModalBody').hide();
-		$('#editFooter').hide();
-		$('#modProfileForm').show();
-		$('#saveFooter').show();
-	});
-	$('#saveProfileBtn').click(function() {
-		console.log('saving new profile');
-		currentUser.specs.name = $('#modName').val();
-		currentUser.specs.email = $('#modEmail').val();
-		currentUser.specs.picture.data = './public/' + $('#modUserPic').attr('src');
-		currentUser.specs.picture.contentType = "image/png";
-		currentUser.specs.residence = $('#modLocation').val();
-		currentUser.specs.experienceLevel = $('#modExperienceLevel').val();
-		var haveGear = "No";
-		if($('#modGearCheck').val() === true) {
-			haveGear = "Yes";
-		}
-		currentUser.specs.gear = haveGear;
-		currentUser.updateUser(currentUser.specs);
-		currentUser.buildHomePage();
 		$('#modProfileForm').hide();
 		$('#saveFooter').hide();
 		$('#profileModalBody').show();
 		$('#editFooter').show();
 	});
+	$('#editProfileBtn').click(function() {
+		currentUser.editUserProfile();
+	});
+
 	$('#tripModalBtn').click(function() {
 		$('#createTripModal').modal('show');
 	});

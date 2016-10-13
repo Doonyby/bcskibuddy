@@ -187,6 +187,7 @@ app.put('/users/:id', function(req, res) {
                 message: 'Internal Server Error'
             });
         }
+        item.name = req.body.name;
         item.residence = req.body.residence;
         item.experienceLevel = req.body.experienceLevel;
         item.gear = req.body.gear;
