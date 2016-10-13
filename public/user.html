@@ -33,24 +33,24 @@
 			<div class="col-md-6" id="existingAccount">
 				<p>This will be each individual's user page where all the magic happens.</p>
 				<p>Only way to exit this page will be to log off, or close the page.</p>
-				<div id="userTripDisplay">
+				<div id="userTourDisplay">
 					<h1>Your Ski Trips</h1>
 					<p>These are the ski trips that you instigated.</p>
-					<ul id="planTripList">
-						<li>You do not have any upcoming trips planned by you.  Click <a id="tripModalBtn" href="#tripModalBtn">here</a> to create a new ski trip.</li>
+					<ul id="planTourList">
+						<li>You do not have any upcoming trips planned by you.  Click <a id="tourModalBtn" href="#tourModalBtn">here</a> to create a new ski trip.</li>
 					</ul>
 				</div>
-				<div id="joinedTrips">
+				<div id="joinedTours">
 					<h1>Trips You've Joined</h1>
 					<p>These are other trips that you've joined.</p>
-					<ul id="joinedTripList">
+					<ul id="joinedTourList">
 						<li>You currently have not joined any trips. Search below for trips to join in your desired location.</li>
 					</ul>
 				</div>
-				<div id="tripsByLocation">
+				<div id="tourByLocation">
 					<h1>Upcoming Ski Trips</h1>
 					<p>Choose a location below to display and browse upcoming planned ski trips for that location.</p>
-					<ul id="otherTripList">
+					<ul id="otherTourList">
 						<li>...</li>
 					</ul>
 				</div>
@@ -219,24 +219,24 @@
 				    </div>
 				  </div>
 				</div><!-- /profile modal edit form save changes-->
-				<!-- create trip modal form -->
-				<div class="modal fade" id="createTripModal" data-backdrop="static" tabindex="-1" role="dialog">
+				<!-- create tour modal form -->
+				<div class="modal fade" id="createTourModal" data-backdrop="static" tabindex="-1" role="dialog">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title">Create a trip by filling out the information below.</h4>
+				        <h4 class="modal-title">Create a tour by filling out the information below.</h4>
 				      </div>
 				      <div class="modal-body" id="profileModalBody">
 				        <p>Please enter the details below with as much accuracy as possible.</p>
 				        <form id="createTripForm">
-				          <div class="form-group">
-						    <label>Name</label>
-						    <input type="text" class="form-control" id="modName" placeholder="Name">
+						  <div class="form-group">
+						    <label>Tour Organizer</label>
+							<p id="tourOrganizer"></p>
 						  </div>
 						  <div class="form-group">
 							<label>Location</label>
-						    <select class="form-control">
+						    <select class="form-control" id="tourLocation">
 						      <option value="" disabled selected hidden>Please Choose...</option>
 							  <option value="Logan">Logan</option>
 							  <option value="Ogden">Ogden</option>
@@ -248,62 +248,42 @@
 							  <option value="Abajos">Abajos</option>
 							</select>
 						  </div>
-				        	<input id="tripLocation" type="input" placeholder="Location">
-							<input id="tripArea" type="input" placeholder="Planned ski area. (e.g. Little Cottonwood Canyon- Grizzly Gulch)">
-				        	<input id="tripDate" type="input" placeholder="Date">
-				        	<input id="tripTime" type="input" placeholder="Planned meeting time.">
-				        	<input id="tripDifficulty" type="input" placeholder="Difficulty">
-				        	<input id="tripComments" type="input" placeholder="Feel free to include any other necessary details. (e.g. Specific runs you're planning on, or comments about past trips to the same are, etc.)">
+						  <div class="form-group">
+						    <label>Touring Area</label>
+							<input type="text" class="form-control" id="tourArea" placeholder="Planned ski area. (e.g. Little Cottonwood Canyon- Grizzly Gulch)">
+						  </div>
+						  <div class="form-group">
+						    <label>Tour Date</label>
+							<input type="date" class="form-control" id="tourDate">
+						  </div>
+						  <div class="form-group">
+						    <label>Time of Meetup</label>
+							<input type="time" class="form-control" id="tourTime">
+						  </div>
+						  <div class="form-group">
+							<label>Estimated Tour Difficulty</label>
+						    <select class="form-control" id="tourDifficulty">
+						      <option value="" disabled selected hidden>Please Choose...</option>
+						      <option value="Strenuous/Experienced">Strenuous/Experienced</option>
+							  <option value="Moderate/Intermediate">Moderate/Intermediate</option>
+							  <option value="Light/Beginner">Light/Beginner</option>
+							  <option value="Easy/No Experience/Training">Easy/No Experience/Training</option>
+							</select>
+						  </div>
+						  <div class="form-group">
+						    <label>Tour Comments</label>
+						    <p>Feel free to include any other necessary details. (e.g. Specific runs/routes, estimated time frame, different meetup location, or comments about past trips to the same are, etc.)</p>
+							<textarea class="form-control" rows="4" id="tourComments"></textarea>
+						  </div>
 				        </form>
-				        <form>
-
-						  <div class="form-group">
-						    <label>Upload a Picture</label>
-						    <input type="file" id="modPicture">
-						    <img src="..." class="img-responsive img-thumbnail" id="userPic" alt="Responsive image">
-						  </div>
-						  <div class="form-group">
-							<label>Location</label>
-						    <select class="form-control">
-						      <option value="" disabled selected hidden>Please Choose...</option>
-							  <option value="Logan">Logan</option>
-							  <option value="Ogden">Ogden</option>
-							  <option value="Salt Lake City">Salt Lake City</option>
-							  <option value="Provo">Provo</option>
-							  <option value="Uintas">Uintas</option>
-							  <option value="Skyline">Skyline</option>
-							  <option value="Moab">Moab</option>
-							  <option value="Abajos">Abajos</option>
-							</select>
-						  </div>
-						  <div class="form-group">
-						    <label>Email Address</label>
-						    <input type="email" class="form-control" id="modEmail" placeholder="Email">
-						  </div>
-						  <div class="form-group">
-							<label>Experience Level</label>
-						    <select class="form-control">
-						      <option value="" disabled selected hidden>Please Choose...</option>
-						      <option value="No Experience">No Experience</option>
-							  <option value="Beginner">Beginner</option>
-							  <option value="Intermediate">Intermediate</option>
-							  <option value="Experienced">Experienced</option>
-							</select>
-						  </div>
-						  <div class="checkbox">
-						    <label>
-						      <input type="checkbox"><b>I have a beacon, shovel, and probe!</b>
-						    </label>
-						  </div>
-						</form>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary">Create Trip</button>
+				        <button type="button" class="btn btn-primary" id="createTourBtn">Create Tour</button>
 				      </div>
 				    </div>
 				  </div>
-				</div><!-- /create trip modal -->
+				</div><!-- /create tour modal -->
 			</div>
 			<div class="col-md-3"></div>
 		</div>

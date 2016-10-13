@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 
-var TripSchema = new mongoose.Schema({
+var TourSchema = new mongoose.Schema({
+	createdBy: {
+		type: String,
+		required: true
+	},	
 	location: {
 		type: String,
 		required: true
@@ -18,17 +22,16 @@ var TripSchema = new mongoose.Schema({
 	difficulty: {
 		type: String
 	},
-	createdBy: {
-		type: String,
-		required: true
+	comments: {
+		type: String
 	},
 	usersGoing: {
 		type: Array
 	}
 });
 
-var Trip = mongoose.model('Trip', TripSchema);
-module.exports = Trip;
+var Tour = mongoose.model('Tour', TourSchema);
+module.exports = Tour;
 
 // var mockUpcomingTrips = {
 // 	"upcomingTrips": [

@@ -122,7 +122,58 @@ CurrentUser.prototype.buildHomePage = function() {
 	$('#profileLocation').text("Location: " + this.specs.residence);
 	$('#profileExperience').text("Experience level: " + this.specs.experienceLevel);
 	$('#profileGear').text("Beacon, Shovel, and Probe: " + this.specs.gear);
+	$('#tourOrganizer').text(this.specs.username);
 }
+CurrentUser.prototype.createTour = function() {
+	var newTour = {};
+	newTour.createdBy = this.specs.username;
+	newTour.location = $('#tourLocation').val();
+	newTour.area = $('#tourArea').val();
+	newTour.date = $('#tourDate').val();
+	newTour.time = $('#tourTime').val();
+	newTour.difficulty = $('#tourDifficulty').val();
+	newTour.comments = $('#tourComments').val();
+	newTour.usersGoing = [];
+	newTour.usersGoing.push(this.specs.username);
+	var that = this;
+    var ajax = $.ajax('/tours', {
+        type: 'POST',
+        data: JSON.stringify(newTour),
+        dataType: 'json',
+        contentType: 'application/json'
+    }).done(function(data) {
+    	console.log('posted newTour');
+    	that.getCreatedTours();
+    }).fail(function(error) {
+    	console.log(error);
+    	console.log('failed to post newTour');
+    });
+}
+// CurrentUser.prototype.editTour = function() {
+	
+// }
+CurrentUser.prototype.getCreatedTours = function() {
+	var that = this;
+	var ajax = $.ajax('/tours/userCreated/' + that.specs.username, {
+        type: 'GET',
+		dataType: 'json',
+		contentType: 'application/json'
+    }).done(function(data) {
+		$('#createTourModal').modal('hide');
+		console.log(data);
+    }).fail(function() {
+    	console.log("couldn't get created tours");
+    });	
+}
+// CurrentUser.prototype.joinTour = function() {
+	
+// }
+// CurrentUser.prototype.getJoinedTours = function() {
+	
+// }
+// CurrentUser.prototype.deleteTour = function() {
+	
+// }
 // CurrentUser.prototype.displayTrips = function() {
 // 	mockUpcomingTrips.upcomingTrips.forEach(function(object) {
 // 		var area = object.area;
@@ -139,7 +190,6 @@ CurrentUser.prototype.buildHomePage = function() {
 function currentUserControl(user) {
 	var currentUser = new CurrentUser();
 	currentUser.getUser(user);
-
     $('#deleteAcctBtn').click(function() {
 		currentUser.deleteAccount();
 	});
@@ -153,9 +203,11 @@ function currentUserControl(user) {
 	$('#editProfileBtn').click(function() {
 		currentUser.editUserProfile();
 	});
-
-	$('#tripModalBtn').click(function() {
-		$('#createTripModal').modal('show');
+	$('#tourModalBtn').click(function() {
+		$('#createTourModal').modal('show');
+	});
+	$('#createTourBtn').click(function() {
+		currentUser.createTour();
 	});
 }
 

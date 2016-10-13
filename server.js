@@ -9,7 +9,7 @@ var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 var config = require('./config');
 var Users = require('./models/user.js');
-var Trip = require('./models/trips.js');
+var Tours = require('./models/tour.js');
 var fs = require('fs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -44,13 +44,17 @@ app.get('/', function (req, res) {
     res.status(200);
 });
 
+app.get('/info', function(req, res) {
+    res.sendfile('./public/info.html');
+    res.status(200);
+});
+
 app.get('/user', function(req, res) {
 	res.sendfile('./public/user.html');
 	res.status(200);
 });
 
 app.get('/users/:username', function(req, res) {
-    console.log(req.body);
     Users.findOne({username: req.params.username}, function(err, items) {
         if (err) {
             return res.status(500).json({
@@ -216,13 +220,30 @@ app.delete('/users/:id', function(req, res) {
     });
 });
 
-app.get('/info', function(req, res) {
-	res.sendfile('./public/info.html');
-	res.status(200);
+app.post('/tours', function(req, res) {
+    Tours.create(req.body, function(err, item) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        return res.status(201).json(item);
+    });
+});
+
+app.get('/tours/userCreated/:username', function(req, res) {
+    Tours.find({createdBy: req.params.username}, function(err, items) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        res.json(items);
+    });
 });
 
 app.get("*", function(req, res) { 
-	res.redirect("/");
+    res.redirect("/");
 });
 
 exports.app = app;
