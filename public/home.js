@@ -7,6 +7,7 @@ $(document).ready(function() {
 
 	$('#oldAcctForm').submit(function(event) {
 		event.preventDefault();
+		console.log('submitted');
 		var user = {
 			username: $('#existingUsername').val(),
 			password: $('#existingPassword').val()
@@ -17,8 +18,8 @@ $(document).ready(function() {
 
 var CurrentUser = function() {
 	this.specs = {};
-	this.tripsPlanned = [];
-	this.tripsJoined = [];
+	this.toursPlanned = [];
+	this.toursJoined = [];
 }
 CurrentUser.prototype.getUser = function(user) {
 	var that = this;
@@ -123,6 +124,7 @@ CurrentUser.prototype.buildHomePage = function() {
 	$('#profileExperience').text("Experience level: " + this.specs.experienceLevel);
 	$('#profileGear').text("Beacon, Shovel, and Probe: " + this.specs.gear);
 	$('#tourOrganizer').text(this.specs.username);
+	this.getCreatedTours();
 }
 CurrentUser.prototype.createTour = function() {
 	var newTour = {};
@@ -160,7 +162,9 @@ CurrentUser.prototype.getCreatedTours = function() {
 		contentType: 'application/json'
     }).done(function(data) {
 		$('#createTourModal').modal('hide');
-		console.log(data);
+		that.toursPlanned = data;
+		console.log(that.toursPlanned);
+		that.displayCreatedTours();
     }).fail(function() {
     	console.log("couldn't get created tours");
     });	
@@ -171,23 +175,92 @@ CurrentUser.prototype.getCreatedTours = function() {
 // CurrentUser.prototype.getJoinedTours = function() {
 	
 // }
+// CurrentUser.prototype.displayJoinedTours = function() {
+	
+// }
+CurrentUser.prototype.getTourByLocationList = function() {
+	var searchLocation = $('#browseTourByLocation').val();
+	var ajax = $.ajax('/tours/searchLocation/' + searchLocation, {
+        type: 'GET',
+		dataType: 'json',
+		contentType: 'application/json'
+    }).done(function(data) {
+		console.log(data);
+    }).fail(function() {
+    	console.log("couldn't get tours by location");
+    });	
+}
 // CurrentUser.prototype.deleteTour = function() {
 	
 // }
-// CurrentUser.prototype.displayTrips = function() {
-// 	mockUpcomingTrips.upcomingTrips.forEach(function(object) {
-// 		var area = object.area;
-// 		var date = object.date;
-// 		var time = object.time;
-// 		var difficulty = object.difficulty;
-// 		var party = object.usersGoing.length;
-// 		$('#tripInfo').html('<li><p>' + date + ": " + time + '</p><p>Area: ' + area + 
-// 			'</p><p>Planned difficulty: ' + difficulty + 
-// 			'</p><p>Group size: <a href="partySize">' + party + '</a></p></li>');
-// 	});
-// }
+CurrentUser.prototype.displayCreatedTours = function() {
+	if (this.toursPlanned.length == 0) {
+		$('#userTourPanel').append('<p>You do not have any upcoming tours that you organized. ' + 
+			'Click "Create Tour" button above, or <a id="tourModalBtn" href="#tourModalBtn">here</a>' +
+			' to create a new ski trip.</li>');
+	}
+	else {
+		this.toursPlanned.forEach(function(item, index) {
+			var organizer = item.createdBy;
+			var location = item.location;
+			var area = item.area;
+			var date = item.date;
+			var time = item.time;
+			var difficulty = item.difficulty;
+			var comments = item.comments;
+			var party = item.usersGoing;
+			var html = '';
+		    html += '<div class="panel panel-primary">';
+		    html += '<div class="panel-heading collapsed" role="tab button" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">';
+		    html += '<h4 class="panel-title">';
+			html += 'Location: Area		Date: Time <span class="caret" style="float, right"></span>';
+		    html += '</h4>';
+		    html += '</div>';
+		    html += '<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
+		    html += '<div class="panel-body">';
+		    html += '<h4>Tour Organizer: <a href="">bob</a></h4>';
+		    html += '<h4>Difficulty: hard</h4>';
+		    html += '<h4>Members Going: <a href="">bob</a>, <a href="">rachel</a></h4>';
+		    html += '<h4>Comments:</h4>';
+		    html += '<div id>';
+			html += '<div class="media">';
+			html += '<div class="media-left">';
+			html += '<a href="#">';
+			html += '<img class="media-object" src="..." alt="...">';
+			html += '</a>';
+			html += '</div>';
+			html += '<div class="media-body">';
+			html += '<h5 class="media-heading">Bob</h5>';
+			html += '<p>This is my comment.</p>';
+			html += '</div>';
+			html += '</div>';
+			html += '<div class="media">';
+			html += '<div class="media-left">';
+			html += '<a href="#">';
+			html += '<img class="media-object" src="..." alt="...">';
+			html += '</a>';
+			html += '</div>';
+			html += '<div class="media-body">';
+			html += '<h5 class="media-heading">Rachel</h5>';
+			html += '<p>This is my comment.</p>';
+			html += '</div>';
+			html += '</div>';
+			html += '</div>';
+		    html += '</div>';
+		    html += '<div class="panel-footer">';
+			html += '<button type="button" class="btn btn-primary">Add Comment</button>';
+			html += '<button type="button" class="btn btn-primary">Edit Tour</button>';
+			html += '</div>';
+		    html += '</div>';
+		    html += '</div>';
+			$('#userTourPanel').append(html);
+		});
+	}
+
+}
 
 function currentUserControl(user) {
+	console.log('called user control');
 	var currentUser = new CurrentUser();
 	currentUser.getUser(user);
     $('#deleteAcctBtn').click(function() {
@@ -208,6 +281,10 @@ function currentUserControl(user) {
 	});
 	$('#createTourBtn').click(function() {
 		currentUser.createTour();
+	});
+	$('#tourByLocationForm').submit(function(e) {
+		e.preventDefault();
+		currentUser.getTourByLocationList();
 	});
 }
 

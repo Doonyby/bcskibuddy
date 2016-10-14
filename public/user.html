@@ -34,25 +34,134 @@
 				<p>This will be each individual's user page where all the magic happens.</p>
 				<p>Only way to exit this page will be to log off, or close the page.</p>
 				<div id="userTourDisplay">
-					<h1>Your Ski Trips</h1>
-					<p>These are the ski trips that you instigated.</p>
-					<ul id="planTourList">
-						<li>You do not have any upcoming trips planned by you.  Click <a id="tourModalBtn" href="#tourModalBtn">here</a> to create a new ski trip.</li>
-					</ul>
+					<h1>My Organized Tours</h1>
+					<p>These are the ski trips that you organized.</p>
+					<div class="panel-group" id="userTourPanel">
+					  
+					</div>
 				</div>
-				<div id="joinedTours">
-					<h1>Trips You've Joined</h1>
+				<div id="joinedToursDisplay">
+					<h1>My Joined Tours</h1>
 					<p>These are other trips that you've joined.</p>
 					<ul id="joinedTourList">
 						<li>You currently have not joined any trips. Search below for trips to join in your desired location.</li>
 					</ul>
+					<div class="panel-group" id="joinedTourPanel">
+					  <!-- <div class="panel panel-primary">
+					    <div class="panel-heading collapsed" role="tab button" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					      <h4 class="panel-title">
+							Location: Area		Date: Time <span class="caret" style="float, right"></span>
+					      </h4>
+					    </div>
+					    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+					      <div class="panel-body">
+					      	<h4>Tour Organizer: <a href="">bob</a></h4>
+					        <h4>Difficulty: hard</h4>
+					        <h4>Members Going: <a href="">bob</a>, <a href="">rachel</a></h4>
+					        <h4>Comments:</h4>
+					        <div id> 
+						        <div class="media">
+								  <div class="media-left">
+								    <a href="#">
+								      <img class="media-object" src="..." alt="...">
+								    </a>
+								  </div>
+								  <div class="media-body">
+								    <h5 class="media-heading">Bob</h5>
+								    <p>This is my comment.</p>
+								  </div>
+								</div>
+								<div class="media">
+								  <div class="media-left">
+								    <a href="#">
+								      <img class="media-object" src="..." alt="...">
+								    </a>
+								  </div>
+								  <div class="media-body">
+								    <h5 class="media-heading">Rachel</h5>
+								    <p>This is my comment.</p>
+								  </div>
+								</div>
+							</div>
+					      </div>
+					      <div class="panel-footer">
+							  <button type="button" class="btn btn-primary">Add Comment</button>
+							  <button type="button" class="btn btn-primary">Cancel Joined Tour</button>
+						  </div>
+					    </div>
+					  </div> -->
+					</div>
 				</div>
 				<div id="tourByLocation">
-					<h1>Upcoming Ski Trips</h1>
-					<p>Choose a location below to display and browse upcoming planned ski trips for that location.</p>
-					<ul id="otherTourList">
-						<li>...</li>
-					</ul>
+				  <div id="selectTourByLocation">
+					<h1>Upcoming Ski Tours</h1>
+					<p>Choose a location below to display, browse, and join upcoming planned ski trips for that location.</p>
+					<form id="tourByLocationForm">
+						<div class="form-group">
+							<select class="form-control" id="browseTourByLocation">
+						      <option value="SeeAll">See All Locations</option>
+							  <option value="Logan">Logan</option>
+							  <option value="Ogden">Ogden</option>
+							  <option value="Salt Lake City">Salt Lake City</option>
+							  <option value="Provo">Provo</option>
+							  <option value="Uintas">Uintas</option>
+							  <option value="Skyline">Skyline</option>
+							  <option value="Moab">Moab</option>
+							  <option value="Abajos">Abajos</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<input type="submit" id="tourByLocationBtn">
+						</div>
+					</form>
+					
+				  </div><br>
+				  <div id="displayTourByLocation">
+					<div class="panel-group" id="joinTourByLocationPanel">
+					  <div class="panel panel-primary">
+					    <div class="panel-heading collapsed" role="tab button" id="headingThree" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					      <h4 class="panel-title">
+							Location: Area		Date: Time <span class="caret" style="float, right"></span>
+					      </h4>
+					    </div>
+					    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+					      <div class="panel-body">
+					      	<h4>Tour Organizer: <a href="">bob</a></h4>
+					        <h4>Difficulty: hard</h4>
+					        <h4>Members Going: <a href="">bob</a>, <a href="">rachel</a></h4>
+					        <h4>Comments:</h4>
+					        <div id> 
+						        <div class="media">
+								  <div class="media-left">
+								    <a href="#">
+								      <img class="media-object" src="..." alt="...">
+								    </a>
+								  </div>
+								  <div class="media-body">
+								    <h5 class="media-heading">Bob</h5>
+								    <p>This is my comment.</p>
+								  </div>
+								</div>
+								<div class="media">
+								  <div class="media-left">
+								    <a href="#">
+								      <img class="media-object" src="..." alt="...">
+								    </a>
+								  </div>
+								  <div class="media-body">
+								    <h5 class="media-heading">Rachel</h5>
+								    <p>This is my comment.</p>
+								  </div>
+								</div>
+							</div>
+					      </div>
+					      <div class="panel-footer">
+							  <button type="button" class="btn btn-primary">Join Tour</button>
+						  </div>
+					    </div>
+					  </div>
+					</div>
+				  </div>
 				</div>
 				<!-- sign in modal -->
 				<div id="oldAccountModal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">

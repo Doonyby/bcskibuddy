@@ -231,6 +231,30 @@ app.post('/tours', function(req, res) {
     });
 });
 
+app.get('/tours/searchLocation/:location', function(req, res) {
+    if (req.params.location == 'SeeAll') {
+        Tours.find(function(err, items) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Internal Server Error'
+                });
+            }
+            res.json(items);
+        });
+    }
+    else {
+        Tours.find({location: req.params.location}, function(err, items) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Internal Server Error'
+                });
+            }
+            res.json(items);
+        });
+    }
+    
+});
+
 app.get('/tours/userCreated/:username', function(req, res) {
     Tours.find({createdBy: req.params.username}, function(err, items) {
         if (err) {
