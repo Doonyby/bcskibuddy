@@ -179,21 +179,83 @@ CurrentUser.prototype.getCreatedTours = function() {
 	
 // }
 CurrentUser.prototype.getTourByLocationList = function() {
+	var that = this;
 	var searchLocation = $('#browseTourByLocation').val();
 	var ajax = $.ajax('/tours/searchLocation/' + searchLocation, {
         type: 'GET',
 		dataType: 'json',
 		contentType: 'application/json'
     }).done(function(data) {
-		console.log(data);
+		that.displayTourByLocation(data);
     }).fail(function() {
     	console.log("couldn't get tours by location");
     });	
+}
+CurrentUser.prototype.displayTourByLocation = function(tours) {
+	$('#joinTourByLocationPanel').empty();
+	tours.forEach(function(item, index) {
+		var organizer = item.createdBy;
+			var location = item.location;
+			var area = item.area;
+			var date = item.date;
+			var time = item.time;
+			var difficulty = item.difficulty;
+			var comments = item.comments;
+			var party = '';
+			var getParty = item.usersGoing.forEach(function(item) {
+				party += '<a href=""><u>' + item + '</u> </a>';
+			});
+			var html = '';
+		    html += '<div class="panel panel-primary">' +
+					    '<div class="panel-heading collapsed" role="tab button" id="locationTourHeading' + index + '" data-toggle="collapse" href="#locationTourCollapse' + index + '" aria-expanded="false" aria-controls="locationTourCollapse' + index + '">' +
+					      '<h4 class="panel-title">' +
+							 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
+					      '</h4>' +
+					    '</div>' +
+					    '<div id="locationTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="locationTourHeading' + index + '">' +
+					      '<div class="panel-body">' +
+					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+					        '<h4>Difficulty: ' + difficulty + '</h4>' +
+					        '<h4>Members Going: ' + party + '</h4>' +
+					        '<h4>Comments:</h4>' +
+					        '<div id>' + 
+						        '<div class="media">' +
+								  '<div class="media-left">' +
+								    '<a href="#">' +
+								      '<img class="media-object" src="..." alt="...">' +
+								    '</a>' +
+								  '</div>' +
+								  '<div class="media-body">' +
+								    '<h5 class="media-heading">Bob</h5>' +
+								    '<p>This is my comment.</p>' +
+								  '</div>' +
+								'</div>' +
+								'<div class="media">' +
+								  '<div class="media-left">' +
+								    '<a href="#">' +
+								      '<img class="media-object" src="..." alt="...">' +
+								    '</a>' +
+								  '</div>' +
+								  '<div class="media-body">' +
+								    '<h5 class="media-heading">Rachel</h5>' +
+								    '<p>This is my comment.</p>' +
+								  '</div>' +
+								'</div>' +
+							'</div>' +
+					      '</div>' +
+					      '<div class="panel-footer">' +
+							  '<button type="button" class="btn btn-primary">Join Tour</button>' +
+						  '</div>' +
+					    '</div>' +
+					'</div>';
+			$('#joinTourByLocationPanel').append(html);
+	});
 }
 // CurrentUser.prototype.deleteTour = function() {
 	
 // }
 CurrentUser.prototype.displayCreatedTours = function() {
+	$(userTourPanel).empty();
 	if (this.toursPlanned.length == 0) {
 		$('#userTourPanel').append('<p>You do not have any upcoming tours that you organized. ' + 
 			'Click "Create Tour" button above, or <a id="tourModalBtn" href="#tourModalBtn">here</a>' +
@@ -208,55 +270,58 @@ CurrentUser.prototype.displayCreatedTours = function() {
 			var time = item.time;
 			var difficulty = item.difficulty;
 			var comments = item.comments;
-			var party = item.usersGoing;
+			var party = '';
+			var getParty = item.usersGoing.forEach(function(item) {
+				party += '<a href=""><u>' + item + '</u> </a>';
+			});
 			var html = '';
-		    html += '<div class="panel panel-primary">';
-		    html += '<div class="panel-heading collapsed" role="tab button" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">';
-		    html += '<h4 class="panel-title">';
-			html += 'Location: Area		Date: Time <span class="caret" style="float, right"></span>';
-		    html += '</h4>';
-		    html += '</div>';
-		    html += '<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
-		    html += '<div class="panel-body">';
-		    html += '<h4>Tour Organizer: <a href="">bob</a></h4>';
-		    html += '<h4>Difficulty: hard</h4>';
-		    html += '<h4>Members Going: <a href="">bob</a>, <a href="">rachel</a></h4>';
-		    html += '<h4>Comments:</h4>';
-		    html += '<div id>';
-			html += '<div class="media">';
-			html += '<div class="media-left">';
-			html += '<a href="#">';
-			html += '<img class="media-object" src="..." alt="...">';
-			html += '</a>';
-			html += '</div>';
-			html += '<div class="media-body">';
-			html += '<h5 class="media-heading">Bob</h5>';
-			html += '<p>This is my comment.</p>';
-			html += '</div>';
-			html += '</div>';
-			html += '<div class="media">';
-			html += '<div class="media-left">';
-			html += '<a href="#">';
-			html += '<img class="media-object" src="..." alt="...">';
-			html += '</a>';
-			html += '</div>';
-			html += '<div class="media-body">';
-			html += '<h5 class="media-heading">Rachel</h5>';
-			html += '<p>This is my comment.</p>';
-			html += '</div>';
-			html += '</div>';
-			html += '</div>';
-		    html += '</div>';
-		    html += '<div class="panel-footer">';
-			html += '<button type="button" class="btn btn-primary">Add Comment</button>';
-			html += '<button type="button" class="btn btn-primary">Edit Tour</button>';
-			html += '</div>';
-		    html += '</div>';
-		    html += '</div>';
+		    html += '<div class="panel panel-primary">' +
+					    '<div class="panel-heading collapsed" role="tab button" id="planTourHeading' + index + '" data-toggle="collapse" href="#planTourCollapse' + index + '" aria-expanded="false" aria-controls="planTourCollapse' + index + '">' +
+					      '<h4 class="panel-title">' +
+							 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
+					      '</h4>' +
+					    '</div>' +
+					    '<div id="planTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="planTourHeading' + index + '">' +
+					      '<div class="panel-body">' +
+					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+					        '<h4>Difficulty: ' + difficulty + '</h4>' +
+					        '<h4>Members Going: ' + party + '</h4>' +
+					        '<h4>Comments:</h4>' +
+					        '<div id>' + 
+						        '<div class="media">' +
+								  '<div class="media-left">' +
+								    '<a href="#">' +
+								      '<img class="media-object" src="..." alt="...">' +
+								    '</a>' +
+								  '</div>' +
+								  '<div class="media-body">' +
+								    '<h5 class="media-heading">Bob</h5>' +
+								    '<p>This is my comment.</p>' +
+								  '</div>' +
+								'</div>' +
+								'<div class="media">' +
+								  '<div class="media-left">' +
+								    '<a href="#">' +
+								      '<img class="media-object" src="..." alt="...">' +
+								    '</a>' +
+								  '</div>' +
+								  '<div class="media-body">' +
+								    '<h5 class="media-heading">Rachel</h5>' +
+								    '<p>This is my comment.</p>' +
+								  '</div>' +
+								'</div>' +
+							'</div>' +
+					      '</div>' +
+					      '<div class="panel-footer">' +
+							  '<button type="button" class="btn btn-primary">Add Comment</button>' +
+							  '<button type="button" class="btn btn-primary">Edit Tour</button>' +
+							  '<button type="button" class="btn btn-primary">Cancel Tour</button>' +
+						  '</div>' +
+					    '</div>' +
+					'</div>';
 			$('#userTourPanel').append(html);
 		});
 	}
-
 }
 
 function currentUserControl(user) {
