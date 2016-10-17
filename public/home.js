@@ -169,9 +169,20 @@ CurrentUser.prototype.getCreatedTours = function() {
     	console.log("couldn't get created tours");
     });	
 }
-// CurrentUser.prototype.joinTour = function() {
-	
-// }
+CurrentUser.prototype.joinTour = function(tripId) {
+	var that = this;
+	var ajax = $.ajax('/tours/joinTour/' + tripId, {
+		type: 'PUT',
+		data: JSON.stringify(that.specs.username),
+		dataType: 'json',
+		contentType: 'application/json'
+	}).done(function(data) {
+		console.log(data);
+		console.log('completed a put');
+	}).fail(function() {
+		console.log('could not complete put');
+	});
+}
 // CurrentUser.prototype.getJoinedTours = function() {
 	
 // }
@@ -195,60 +206,61 @@ CurrentUser.prototype.displayTourByLocation = function(tours) {
 	$('#joinTourByLocationPanel').empty();
 	tours.forEach(function(item, index) {
 		var organizer = item.createdBy;
-			var location = item.location;
-			var area = item.area;
-			var date = item.date;
-			var time = item.time;
-			var difficulty = item.difficulty;
-			var comments = item.comments;
-			var party = '';
-			var getParty = item.usersGoing.forEach(function(item) {
-				party += '<a href=""><u>' + item + '</u> </a>';
-			});
-			var html = '';
-		    html += '<div class="panel panel-primary">' +
-					    '<div class="panel-heading collapsed" role="tab button" id="locationTourHeading' + index + '" data-toggle="collapse" href="#locationTourCollapse' + index + '" aria-expanded="false" aria-controls="locationTourCollapse' + index + '">' +
-					      '<h4 class="panel-title">' +
-							 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
-					      '</h4>' +
-					    '</div>' +
-					    '<div id="locationTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="locationTourHeading' + index + '">' +
-					      '<div class="panel-body">' +
-					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
-					        '<h4>Difficulty: ' + difficulty + '</h4>' +
-					        '<h4>Members Going: ' + party + '</h4>' +
-					        '<h4>Comments:</h4>' +
-					        '<div id>' + 
-						        '<div class="media">' +
-								  '<div class="media-left">' +
-								    '<a href="#">' +
-								      '<img class="media-object" src="..." alt="...">' +
-								    '</a>' +
-								  '</div>' +
-								  '<div class="media-body">' +
-								    '<h5 class="media-heading">Bob</h5>' +
-								    '<p>This is my comment.</p>' +
-								  '</div>' +
-								'</div>' +
-								'<div class="media">' +
-								  '<div class="media-left">' +
-								    '<a href="#">' +
-								      '<img class="media-object" src="..." alt="...">' +
-								    '</a>' +
-								  '</div>' +
-								  '<div class="media-body">' +
-								    '<h5 class="media-heading">Rachel</h5>' +
-								    '<p>This is my comment.</p>' +
-								  '</div>' +
-								'</div>' +
+		var id = item._id;
+		var location = item.location;
+		var area = item.area;
+		var date = item.date;
+		var time = item.time;
+		var difficulty = item.difficulty;
+		var comments = item.comments;
+		var party = '';
+		var getParty = item.usersGoing.forEach(function(item) {
+			party += '<a href=""><u>' + item + '</u> </a>';
+		});
+		var html = '';
+	    html += '<div class="panel panel-primary">' +
+				    '<div class="panel-heading collapsed" role="tab button" id="locationTourHeading' + index + '" data-toggle="collapse" href="#locationTourCollapse' + index + '" aria-expanded="false" aria-controls="locationTourCollapse' + index + '">' +
+				      '<h4 class="panel-title">' +
+						 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
+				      '</h4>' +
+				    '</div>' +
+				    '<div id="locationTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="locationTourHeading' + index + '">' +
+				      '<div class="panel-body">' +
+				      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+				        '<h4>Difficulty: ' + difficulty + '</h4>' +
+				        '<h4>Members Going: ' + party + '</h4>' +
+				        '<h4>Comments:</h4>' +
+				        '<div id>' + 
+					        '<div class="media">' +
+							  '<div class="media-left">' +
+							    '<a href="#">' +
+							      '<img class="media-object" src="..." alt="...">' +
+							    '</a>' +
+							  '</div>' +
+							  '<div class="media-body">' +
+							    '<h5 class="media-heading">Bob</h5>' +
+							    '<p>This is my comment.</p>' +
+							  '</div>' +
 							'</div>' +
-					      '</div>' +
-					      '<div class="panel-footer">' +
-							  '<button type="button" class="btn btn-primary">Join Tour</button>' +
-						  '</div>' +
-					    '</div>' +
-					'</div>';
-			$('#joinTourByLocationPanel').append(html);
+							'<div class="media">' +
+							  '<div class="media-left">' +
+							    '<a href="#">' +
+							      '<img class="media-object" src="..." alt="...">' +
+							    '</a>' +
+							  '</div>' +
+							  '<div class="media-body">' +
+							    '<h5 class="media-heading">Rachel</h5>' +
+							    '<p>This is my comment.</p>' +
+							  '</div>' +
+							'</div>' +
+						'</div>' +
+				      '</div>' +
+				      '<div class="panel-footer">' +
+						  '<button type="button" class="btn btn-primary" onclick="joinTourBtn(this.value)" value="' + id + '">Join Tour</button>' +
+					  '</div>' +
+				    '</div>' +
+				'</div>';
+		$('#joinTourByLocationPanel').append(html);
 	});
 }
 // CurrentUser.prototype.deleteTour = function() {
@@ -324,9 +336,10 @@ CurrentUser.prototype.displayCreatedTours = function() {
 	}
 }
 
+var currentUser = new CurrentUser();
+
 function currentUserControl(user) {
 	console.log('called user control');
-	var currentUser = new CurrentUser();
 	currentUser.getUser(user);
     $('#deleteAcctBtn').click(function() {
 		currentUser.deleteAccount();
@@ -351,6 +364,10 @@ function currentUserControl(user) {
 		e.preventDefault();
 		currentUser.getTourByLocationList();
 	});
+} 
+
+function joinTourBtn(id) {
+	currentUser.joinTour(id);
 }
 
 function readURL(input) {

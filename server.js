@@ -255,6 +255,26 @@ app.get('/tours/searchLocation/:location', function(req, res) {
     
 });
 
+app.put('/tours/joinTour/:id', function(req, res) {
+    console.log(req.body);
+    Tours.findOne({_id: req.params.id}, function(err, item){
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        item.usersGoing.push(req.body);
+        item.save(function(err) {
+            if (err) {
+                return res.status(500).send(err);
+            } else {
+                res.status(201).json(item);
+            }
+        });
+    });
+});
+
 app.get('/tours/userCreated/:username', function(req, res) {
     Tours.find({createdBy: req.params.username}, function(err, items) {
         if (err) {
