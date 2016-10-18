@@ -23,7 +23,7 @@ var TourSchema = new mongoose.Schema({
 		type: String
 	},
 	comments: {
-		type: String
+		type: Array
 	},
 	usersGoing: {
 		type: Array

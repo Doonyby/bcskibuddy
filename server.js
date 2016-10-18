@@ -209,7 +209,7 @@ app.put('/users/:id', function(req, res) {
 });
 
 app.delete('/users/:id', function(req, res) {
-    var id = req.params.id
+    var id = req.params.id;
     Users.findByIdAndRemove(id, function(err, item) {
         if (err) {
             return res.status(500).json({
@@ -221,7 +221,16 @@ app.delete('/users/:id', function(req, res) {
 });
 
 app.post('/tours', function(req, res) {
-    Tours.create(req.body, function(err, item) {
+    var tour = {};
+    tour.createdBy = req.body.createdBy;
+    tour.location = req.body.location;
+    tour.area = req.body.area;
+    tour.date = req.body.date;
+    tour.time = req.body.time;
+    tour.difficulty = req.body.difficulty;
+    tour.usersGoing = req.body.usersGoing;   
+    tour.comments = req.body.comments;
+    Tours.create(tour, function(err, item) {
         if (err) {
             return res.status(500).json({
                 message: 'Internal Server Error'
@@ -275,6 +284,18 @@ app.put('/tours/joinTour/:id', function(req, res) {
     });
 });
 
+app.delete('/tour/deleteTour/:id', function(req, res) {
+    var id = req.params.id;
+    Tours.findByIdAndRemove(id, function(err, item) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        res.status(201).json(item);
+    });
+});
+
 app.get('/tours/userCreated/:username', function(req, res) {
     Tours.find({createdBy: req.params.username}, function(err, items) {
         if (err) {
@@ -292,7 +313,3 @@ app.get("*", function(req, res) {
 
 exports.app = app;
 exports.runServer = runServer;
-
-var totalTripLocations = ["logan", "ogden", "salt lake", "provo", "uintas", "skyline", "moab", "abajos"];
-
-
