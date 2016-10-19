@@ -54,17 +54,6 @@ app.get('/user', function(req, res) {
 	res.status(200);
 });
 
-app.get('/users/:username', function(req, res) {
-    Users.findOne({username: req.params.username}, function(err, items) {
-        if (err) {
-            return res.status(500).json({
-                message: 'Internal Server Error'
-            });
-        }
-        res.json(items);
-    });
-});
-
 var strategy = new BasicStrategy(function(username, password, callback) {
     User.findOne({username: username}, function(err, user) {
         if(err) {
@@ -96,6 +85,22 @@ app.use(passport.initialize());
 app.get('/hidden', passport.authenticate('basic', {session: false}), function(req, res) {
     res.json({
         message: 'Luke... I am your father'
+    });
+});
+
+app.get('/users/:username', function(req, res) {
+    Users.findOne({username: req.params.username}, function(err, items) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        if (!items) {
+            return res.status(500).json({
+                message: 'Username does not exist'
+            });
+        }
+        res.json(items);
     });
 });
 
@@ -265,7 +270,6 @@ app.get('/tours/searchLocation/:location', function(req, res) {
 });
 
 app.put('/tours/joinTour/:id', function(req, res) {
-    console.log(req.body);
     Tours.findOne({_id: req.params.id}, function(err, item){
         if (err) {
             console.log(err);
@@ -273,14 +277,40 @@ app.put('/tours/joinTour/:id', function(req, res) {
                 message: 'Internal Server Error'
             });
         }
-        item.usersGoing.push(req.body);
+        if (item.usersGoing.indexOf(req.body.username) !== -1) {
+            return res.status(500).json({
+                message: 'Already joined'
+            });
+        }
+        else {
+            item.usersGoing.push(req.body.username);
+            item.save(function(err) {
+                if (err) {
+                    return res.status(500).send(err);
+                } else {
+                    res.status(201).json(item);
+                }
+            });            
+        }
+    });
+});
+
+app.put('/tours/leaveTour/:id', function(req, res) {
+    Tours.findOne({_id: req.params.id}, function(err, item){
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        item.usersGoing.splice(item.usersGoing.indexOf(req.body.username), 1);
         item.save(function(err) {
             if (err) {
                 return res.status(500).send(err);
             } else {
                 res.status(201).json(item);
             }
-        });
+        });            
     });
 });
 
@@ -304,6 +334,36 @@ app.get('/tours/userCreated/:username', function(req, res) {
             });
         }
         res.json(items);
+    });
+});
+
+app.get('/tours/userJoined/:username', function(req, res) {
+    Tours.find({ usersGoing: req.params.username }, function(err, items) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        res.json(items);
+    });
+});
+
+app.put('/tours/addComment/:id', function(req, res) {
+    Tours.findOne({_id: req.params.id}, function(err, item){
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        item.comments.push(req.body);
+        item.save(function(err) {
+            if (err) {
+                return res.status(500).send(err);
+            } else {
+                res.status(201).json(item);
+            }
+        });            
     });
 });
 

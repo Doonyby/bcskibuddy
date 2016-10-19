@@ -12,7 +12,7 @@
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	  	  <div class="navbar-header">
-		      <img alt="Brand" src="" id='brandPic'>
+		      <img alt="Brand" id='brandPic'>
 		  </div>
 		  <p class="navbar-text navbar-center" id="navTitle"></p>
 	      <ul class="nav navbar-nav navbar-right">
@@ -31,8 +31,6 @@
 		<div class="row">
 			<div class="col-md-3"></div>
 			<div class="col-md-6" id="existingAccount">
-				<p>This will be each individual's user page where all the magic happens.</p>
-				<p>Only way to exit this page will be to log off, or close the page.</p>
 				<div id="userTourDisplay">
 					<h1>My Organized Tours</h1>
 					<button type="button" class="btn btn-xs btn-primary" id="tourModalBtn">Create Tour</button><br><br>
@@ -42,10 +40,6 @@
 				</div>
 				<div id="joinedToursDisplay">
 					<h1>My Joined Tours</h1>
-					<p>These are other trips that you've joined.</p>
-					<ul id="joinedTourList">
-						<li>You currently have not joined any trips. Search below for trips to join in your desired location.</li>
-					</ul>
 					<div class="panel-group" id="joinedTourPanel">
 					  
 					</div>
@@ -86,7 +80,7 @@
 				    <div class="modal-content">
 					  <div class="modal-header">
 					    <span class="close" id="closeOldAccountModal">×</span>
-					    <h2>Please enter your username and password.</h2>
+					    <h4>Please sign in.</h4>
 					    <p id='signInFormScrewUp'></p>
 					  </div>
 					  <div class="modal-body">

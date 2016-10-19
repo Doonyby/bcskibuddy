@@ -7,7 +7,6 @@ $(document).ready(function() {
 
 	$('#oldAcctForm').submit(function(event) {
 		event.preventDefault();
-		console.log('submitted');
 		var user = {
 			username: $('#existingUsername').val(),
 			password: $('#existingPassword').val()
@@ -33,13 +32,17 @@ CurrentUser.prototype.getUser = function(user) {
 		$('#existingPassword').val('');
 		$('#oldAccountModal').modal('hide');
 		that.specs = data;
-		console.log(that.specs);
 		if (!that.specs.email) {
 	    	that.editUser();
 	    }
 	    else {
 	    	that.buildHomePage();
 	    }
+    }).fail(function(error) {
+    	if (error.responseJSON.message = "Username does not exist") {
+			$('#signInFormScrewUp').text("Username does not exist. If you don't have an account with us," + 
+				" please close the window and create an account.").css('color', 'red');
+    	}
     });
 };
 CurrentUser.prototype.editUser = function() {
@@ -114,8 +117,9 @@ CurrentUser.prototype.deleteAccount = function() {
     });
 }
 CurrentUser.prototype.buildHomePage = function() {
+	console.log(this.specs.picture);
 	$('#navTitle').text(this.specs.name + "'s Home Page");
-	$('#brandPic').attr('src', 'data:image/jpg;base64,' + this.specs.picture.data.toString('base64'));
+	$('#brandPic').attr('src', 'data:image/jpg;base64,' + this.specs.picture.data.data.toString('base64'));
 	$('#profileName').text("Name: " + this.specs.name);
 	$('#username').text("Username: " + this.specs.username);	
 	$('#email').text("Email: " + this.specs.email);
@@ -125,6 +129,7 @@ CurrentUser.prototype.buildHomePage = function() {
 	$('#profileGear').text("Beacon, Shovel, and Probe: " + this.specs.gear);
 	$('#tourOrganizer').text(this.specs.username);
 	this.getCreatedTours();
+	this.getJoinedTours();
 }
 CurrentUser.prototype.createTour = function() {
 	var newTour = {};
@@ -150,14 +155,18 @@ CurrentUser.prototype.createTour = function() {
     }).done(function(data) {
     	console.log('posted newTour');
     	that.getCreatedTours();
+    	$('#joinTourByLocationPanel').empty();
+    	$('#tourLocation').val('');
+    	$('#tourArea').val('');
+    	$('#tourDate').val('');
+    	$('#tourTime').val('');
+    	$('#tourDifficulty').val('');
+    	$('#tourComments').val('')
     }).fail(function(error) {
     	console.log(error);
     	console.log('failed to post newTour');
     });
 }
-// CurrentUser.prototype.editTour = function() {
-	
-// }
 CurrentUser.prototype.getCreatedTours = function() {
 	var that = this;
 	var ajax = $.ajax('/tours/userCreated/' + that.specs.username, {
@@ -177,22 +186,131 @@ CurrentUser.prototype.joinTour = function(tripId) {
 	var that = this;
 	var ajax = $.ajax('/tours/joinTour/' + tripId, {
 		type: 'PUT',
-		data: JSON.stringify(that.specs.username),
+		data: JSON.stringify({'username': that.specs.username}),
+		dataType: 'json',
+		contentType: 'application/json'
+	}).done(function(data) {
+		console.log('completed join tour put');
+		that.getJoinedTours();
+	}).fail(function() {
+		console.log('could not complete join tour put');
+	});
+}
+CurrentUser.prototype.leaveTour = function(tripId) {
+	var that = this;
+	var ajax = $.ajax('/tours/leaveTour/' + tripId, {
+		type: 'PUT',
+		data: JSON.stringify({'username': that.specs.username}),
+		dataType: 'json',
+		contentType: 'application/json'
+	}).done(function(data) {
+		console.log('completed leave tour put');
+		that.getJoinedTours();
+	}).fail(function(error) {
+		console.log(error);
+		console.log('could not complete leave tour put');
+	});
+}
+CurrentUser.prototype.addComment = function(tripId) {
+	var newComment = {};
+	newComment.username = this.specs.username;
+	newComment.comment = $('#addTourComments').val();
+	var that = this;
+	var ajax = $.ajax('/tours/addComment/' + tripId, {
+		type: 'PUT',
+		data: JSON.stringify(newComment),
 		dataType: 'json',
 		contentType: 'application/json'
 	}).done(function(data) {
 		console.log(data);
-		console.log('completed a put');
-	}).fail(function() {
-		console.log('could not complete put');
-	});
+		console.log('completed comment put');
+		that.displayJoinedTours();
+		that.displayCreatedTours();
+	}).fail(function(error) {
+		console.log(error);
+		console.log('could not complete comment put');
+	})
 }
-// CurrentUser.prototype.getJoinedTours = function() {
-	
-// }
-// CurrentUser.prototype.displayJoinedTours = function() {
-	
-// }
+CurrentUser.prototype.getJoinedTours = function() {
+	var that = this;
+	var ajax = $.ajax('/tours/userJoined/' + that.specs.username, {
+        type: 'GET',
+		dataType: 'json',
+		contentType: 'application/json'
+    }).done(function(data) {
+    	that.toursJoined = [];
+    	for (var i=0; i<data.length; i++) {
+    		if (data[i].createdBy !== that.specs.username) {
+    			that.toursJoined.push(data[i]);
+    		}
+    	}
+    	that.displayJoinedTours();
+    }).fail(function() {
+    	console.log("couldn't get created tours");
+    });
+}
+CurrentUser.prototype.displayJoinedTours = function() {
+	$(joinedTourPanel).empty();
+	if (this.toursJoined.length == 0) {
+		$('#joinedTourPanel').append('<p>You have not joined any tours yet. Search through the locations' +
+			' below to find a tour to join in your desired area.</p>');
+	}
+	else {
+		$('#joinedTourPanel').append('<p>These are the tours that you have joined.</p>');		
+		this.toursJoined.forEach(function(item, index) {
+			var id = item._id;
+			var organizer = item.createdBy;
+			var location = item.location;
+			var area = item.area;
+			var date = item.date;
+			var time = item.time;
+			var difficulty = item.difficulty;
+			var party = '';
+			var getParty = item.usersGoing.forEach(function(item) {
+				party += '<a href=""><u>' + item + '</u> </a>';
+			});
+			var comments = '';
+			var getComments = item.comments.forEach(function(item) {
+				comments += '<div class="media">' +
+							  '<div class="media-left">' +
+							    '<img class="media-object" src="' + item.picData + '" alt="...">' +
+							  '</div>' +
+							  '<div class="media-body">' +
+							    '<h5 class="media-heading"><a href="#"><u>' + item.username + '</u></a></h5>' +
+							    '<p>' + item.comment + '</p>' +
+							  '</div>' +
+							'</div>' 
+			});
+			var html = '';
+		    html += '<div class="panel panel-primary">' +
+					    '<div class="panel-heading collapsed" role="tab button" id="joinTourHeading' + index + '" data-toggle="collapse" href="#joinTourCollapse' + index + '" aria-expanded="false" aria-controls="joinTourCollapse' + index + '">' +
+					      '<h4 class="panel-title">' +
+							 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
+					      '</h4>' +
+					    '</div>' +
+					    '<div id="joinTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="joinTourHeading' + index + '">' +
+					      '<div class="panel-body">' +
+					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+					        '<h4>Difficulty: ' + difficulty + '</h4>' +
+					        '<h4>Members Going: ' + party + '</h4>' +
+					        '<h4>Comments:</h4>' +
+					        '<div id="commentsDiv">' + comments + '</div>' +
+					        '<div id="addCommentsDiv">' +
+					          '<form id="commentForm">' +
+						          '<textarea class="form-control" rows="4" id="addTourComments"></textarea>' +
+								  '<button type="button" class="btn btn-primary" onclick="postCommentBtn(this.value)" value="' + id + '">Post Comment</button>' +
+					          '</form>' +
+					        '</div>' +
+					      '</div>' +
+					      '<div class="panel-footer">' +
+							  '<button type="button" class="btn btn-primary" onclick="leaveTourBtn(this.value)" value="' + id + '">Leave Tour</button>' +
+						  '</div>' +
+					    '</div>' +
+					'</div>';
+			$('#joinedTourPanel').append(html);
+		});
+	}
+}
 CurrentUser.prototype.getTourByLocationList = function() {
 	var that = this;
 	var searchLocation = $('#browseTourByLocation').val();
@@ -321,10 +439,14 @@ CurrentUser.prototype.displayCreatedTours = function() {
 					        '<h4>Members Going: ' + party + '</h4>' +
 					        '<h4>Comments:</h4>' +
 					        '<div id="commentsDiv">' + comments + '</div>' +
+					        '<div id="addCommentsDiv">' +
+					          '<form id="commentForm">' +
+						          '<textarea class="form-control" rows="4" id="addTourComments"></textarea>' +
+								  '<button type="button" class="btn btn-primary" onclick="postCommentBtn(this.value)" value="' + id + '">Post Comment</button>' +
+					          '</form>' +
+					        '</div>' +					        
 					      '</div>' +
 					      '<div class="panel-footer">' +
-							  '<button type="button" class="btn btn-primary" onclick="addCommentBtn(this.value)" value="' + id + '">Add Comment</button>' +
-							  '<button type="button" class="btn btn-primary" onclick="editTourBtn(this.value)" value="' + id + '">Edit Tour</button>' +
 							  '<button type="button" class="btn btn-primary" onclick="cancelTourBtn(this.value)" value="' + id + '">Cancel Tour</button>' +
 						  '</div>' +
 					    '</div>' +
@@ -337,7 +459,6 @@ CurrentUser.prototype.displayCreatedTours = function() {
 var currentUser = new CurrentUser();
 
 function currentUserControl(user) {
-	console.log('called user control');
 	currentUser.getUser(user);
     $('#deleteAcctBtn').click(function() {
 		currentUser.deleteAccount();
@@ -368,12 +489,12 @@ function joinTourBtn(id) {
 	currentUser.joinTour(id);
 }
 
-function addCommentBtn(id) {
-
+function leaveTourBtn(id) {
+	currentUser.leaveTour(id);
 }
 
-function editTourBtn(id) {
-	console.log(id);
+function postCommentBtn(id) {
+	currentUser.addComment(id);
 }
 
 function cancelTourBtn(id) {
