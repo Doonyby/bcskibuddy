@@ -117,9 +117,9 @@ CurrentUser.prototype.deleteAccount = function() {
     });
 }
 CurrentUser.prototype.buildHomePage = function() {
-	console.log(this.specs.picture);
-	$('#navTitle').text(this.specs.name + "'s Home Page");
-	$('#brandPic').attr('src', 'data:image/jpg;base64,' + this.specs.picture.data.data.toString('base64'));
+	//console.log(this.specs.picture);
+	$('#navTitle').text(this.specs.name.toUpperCase() + "'s Home Page");
+	//$('#brandPic').attr('src', 'data:image/jpg;base64,' + this.specs.picture.data.data.toString('base64'));
 	$('#profileName').text("Name: " + this.specs.name);
 	$('#username').text("Username: " + this.specs.username);	
 	$('#email').text("Email: " + this.specs.email);
@@ -176,11 +176,83 @@ CurrentUser.prototype.getCreatedTours = function() {
     }).done(function(data) {
 		$('#createTourModal').modal('hide');
 		that.toursPlanned = data;
-		console.log(that.toursPlanned);
 		that.displayCreatedTours();
     }).fail(function() {
     	console.log("couldn't get created tours");
     });	
+}
+CurrentUser.prototype.displayCreatedTours = function() {
+	$(userTourPanel).empty();
+	if (this.toursPlanned.length == 0) {
+		$('#userTourPanel').append('<p>You do not have any upcoming tours that you organized. ' + 
+			'Click "Create Tour" button above to create a new ski trip.</p>');
+	}
+	else {
+		$('#userTourPanel').append('<p>These are the tours that you have organized.</p>');		
+		this.toursPlanned.forEach(function(item, index) {
+			var id = item._id;
+			var organizer = item.createdBy;
+			var location = item.location;
+			var area = item.area;
+			var d = new Date(item.date);
+			var date = d.toDateString();
+			var time = item.time;
+			var difficulty = item.difficulty;
+			var party = '';
+			var getParty = item.usersGoing.forEach(function(item) {
+				party += '<a href=""><u>' + item + '</u> </a>';
+			});
+			var comments = '';
+			var getComments = item.comments.forEach(function(item) {
+				comments += '<div class="media">' +
+							  '<div class="media-left">' +
+							    '<img class="media-object" src="' + item.picData + '" alt="...">' +
+							  '</div>' +
+							  '<div class="media-body">' +
+							    '<h5 class="media-heading"><a href="#"><u>' + item.username + '</u></a></h5>' +
+							    '<p>' + item.comment + '</p>' +
+							  '</div>' +
+							'</div>' 
+			});
+			var html = '';
+		    html += '<div class="panel panel-primary">' +
+					    '<div class="panel-heading collapsed" role="tab button" id="planTourHeading' + index + '" data-toggle="collapse" href="#planTourCollapse' + index + '" aria-expanded="false" aria-controls="planTourCollapse' + index + '">' +
+					      '<h4 class="panel-title">' +
+							 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
+					      '</h4>' +
+					    '</div>' +
+					    '<div id="planTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="planTourHeading' + index + '">' +
+					      '<div class="panel-body">' +
+					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+					        '<h4>Difficulty: ' + difficulty + '</h4>' +
+					        '<h4>Members Going: ' + party + '</h4>' +
+					        '<h4>Comments:</h4>' +
+					        '<div id="commentsDiv">' + comments + '</div>' +
+					        '<div id="addCommentsDiv">' +
+					          '<br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" id="' + id + '" placeholder="Enter new comment here."></textarea><br>' +
+					        '</div>' +					        
+					      '</div>' +
+					      '<div class="panel-footer">' +
+							  '<button type="button" class="btn btn-link" onclick="cancelTourBtn(this.value)" value="' + id + '"><span class="text-danger">Cancel Tour</span></button>' +
+						  '</div>' +
+					    '</div>' +
+					'</div>';
+			$('#userTourPanel').append(html);
+		});
+	}
+}
+CurrentUser.prototype.deleteTour = function(tourId) {
+	var that = this;
+	var ajax = $.ajax('/tour/deleteTour/' + tourId, {
+        type: 'DELETE',
+        dataType: 'json'
+    }).done(function() {
+    	console.log('deleted tour');
+    	that.getCreatedTours();
+    	$('#joinTourByLocationPanel').empty();
+    }).fail(function() {
+    	console.log('tour not deleted');
+    });
 }
 CurrentUser.prototype.joinTour = function(tripId) {
 	var that = this;
@@ -195,41 +267,6 @@ CurrentUser.prototype.joinTour = function(tripId) {
 	}).fail(function() {
 		console.log('could not complete join tour put');
 	});
-}
-CurrentUser.prototype.leaveTour = function(tripId) {
-	var that = this;
-	var ajax = $.ajax('/tours/leaveTour/' + tripId, {
-		type: 'PUT',
-		data: JSON.stringify({'username': that.specs.username}),
-		dataType: 'json',
-		contentType: 'application/json'
-	}).done(function(data) {
-		console.log('completed leave tour put');
-		that.getJoinedTours();
-	}).fail(function(error) {
-		console.log(error);
-		console.log('could not complete leave tour put');
-	});
-}
-CurrentUser.prototype.addComment = function(tripId) {
-	var newComment = {};
-	newComment.username = this.specs.username;
-	newComment.comment = $('#addTourComments').val();
-	var that = this;
-	var ajax = $.ajax('/tours/addComment/' + tripId, {
-		type: 'PUT',
-		data: JSON.stringify(newComment),
-		dataType: 'json',
-		contentType: 'application/json'
-	}).done(function(data) {
-		console.log(data);
-		console.log('completed comment put');
-		that.displayJoinedTours();
-		that.displayCreatedTours();
-	}).fail(function(error) {
-		console.log(error);
-		console.log('could not complete comment put');
-	})
 }
 CurrentUser.prototype.getJoinedTours = function() {
 	var that = this;
@@ -262,7 +299,8 @@ CurrentUser.prototype.displayJoinedTours = function() {
 			var organizer = item.createdBy;
 			var location = item.location;
 			var area = item.area;
-			var date = item.date;
+			var d = new Date(item.date);
+			var date = d.toDateString();
 			var time = item.time;
 			var difficulty = item.difficulty;
 			var party = '';
@@ -296,10 +334,7 @@ CurrentUser.prototype.displayJoinedTours = function() {
 					        '<h4>Comments:</h4>' +
 					        '<div id="commentsDiv">' + comments + '</div>' +
 					        '<div id="addCommentsDiv">' +
-					          '<form id="commentForm">' +
-						          '<textarea class="form-control" rows="4" id="addTourComments"></textarea>' +
-								  '<button type="button" class="btn btn-primary" onclick="postCommentBtn(this.value)" value="' + id + '">Post Comment</button>' +
-					          '</form>' +
+					          '<br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" id="' + id + '" placeholder="Enter new comment here."></textarea><br>' +
 					        '</div>' +
 					      '</div>' +
 					      '<div class="panel-footer">' +
@@ -310,6 +345,21 @@ CurrentUser.prototype.displayJoinedTours = function() {
 			$('#joinedTourPanel').append(html);
 		});
 	}
+}
+CurrentUser.prototype.leaveTour = function(tripId) {
+	var that = this;
+	var ajax = $.ajax('/tours/leaveTour/' + tripId, {
+		type: 'PUT',
+		data: JSON.stringify({'username': that.specs.username}),
+		dataType: 'json',
+		contentType: 'application/json'
+	}).done(function(data) {
+		console.log('completed leave tour put');
+		that.getJoinedTours();
+	}).fail(function(error) {
+		console.log(error);
+		console.log('could not complete leave tour put');
+	});
 }
 CurrentUser.prototype.getTourByLocationList = function() {
 	var that = this;
@@ -338,7 +388,8 @@ CurrentUser.prototype.displayTourByLocation = function(tours) {
 		var id = item._id;
 		var location = item.location;
 		var area = item.area;
-		var date = item.date;
+		var d = new Date(item.date);
+		var date = d.toDateString();
 		var time = item.time;
 		var difficulty = item.difficulty;
 		var party = '';
@@ -380,80 +431,25 @@ CurrentUser.prototype.displayTourByLocation = function(tours) {
 		$('#joinTourByLocationPanel').append(html);
 	});
 }
-CurrentUser.prototype.deleteTour = function(tourId) {
+CurrentUser.prototype.addComment = function(comment, tripId) {
+	var newComment = {};
+	newComment.username = this.specs.username;
+	newComment.comment = comment;
 	var that = this;
-	var ajax = $.ajax('/tour/deleteTour/' + tourId, {
-        type: 'DELETE',
-        dataType: 'json'
-    }).done(function() {
-    	console.log('deleted tour');
-    	that.getCreatedTours();
-    	$('#joinTourByLocationPanel').empty();
-    }).fail(function() {
-    	console.log('tour not deleted');
-    });
-}
-CurrentUser.prototype.displayCreatedTours = function() {
-	$(userTourPanel).empty();
-	if (this.toursPlanned.length == 0) {
-		$('#userTourPanel').append('<p>You do not have any upcoming tours that you organized. ' + 
-			'Click "Create Tour" button above to create a new ski trip.</p>');
-	}
-	else {
-		$('#userTourPanel').append('<p>These are the tours that you have organized.</p>');		
-		this.toursPlanned.forEach(function(item, index) {
-			var id = item._id;
-			var organizer = item.createdBy;
-			var location = item.location;
-			var area = item.area;
-			var date = item.date;
-			var time = item.time;
-			var difficulty = item.difficulty;
-			var party = '';
-			var getParty = item.usersGoing.forEach(function(item) {
-				party += '<a href=""><u>' + item + '</u> </a>';
-			});
-			var comments = '';
-			var getComments = item.comments.forEach(function(item) {
-				comments += '<div class="media">' +
-							  '<div class="media-left">' +
-							    '<img class="media-object" src="' + item.picData + '" alt="...">' +
-							  '</div>' +
-							  '<div class="media-body">' +
-							    '<h5 class="media-heading"><a href="#"><u>' + item.username + '</u></a></h5>' +
-							    '<p>' + item.comment + '</p>' +
-							  '</div>' +
-							'</div>' 
-			});
-			var html = '';
-		    html += '<div class="panel panel-primary">' +
-					    '<div class="panel-heading collapsed" role="tab button" id="planTourHeading' + index + '" data-toggle="collapse" href="#planTourCollapse' + index + '" aria-expanded="false" aria-controls="planTourCollapse' + index + '">' +
-					      '<h4 class="panel-title">' +
-							 location + ': ' + area + ',   ' + date + ': ' + time + '<span class="caret" style="float:right;"></span>' +
-					      '</h4>' +
-					    '</div>' +
-					    '<div id="planTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="planTourHeading' + index + '">' +
-					      '<div class="panel-body">' +
-					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
-					        '<h4>Difficulty: ' + difficulty + '</h4>' +
-					        '<h4>Members Going: ' + party + '</h4>' +
-					        '<h4>Comments:</h4>' +
-					        '<div id="commentsDiv">' + comments + '</div>' +
-					        '<div id="addCommentsDiv">' +
-					          '<form id="commentForm">' +
-						          '<textarea class="form-control" rows="4" id="addTourComments"></textarea>' +
-								  '<button type="button" class="btn btn-primary" onclick="postCommentBtn(this.value)" value="' + id + '">Post Comment</button>' +
-					          '</form>' +
-					        '</div>' +					        
-					      '</div>' +
-					      '<div class="panel-footer">' +
-							  '<button type="button" class="btn btn-primary" onclick="cancelTourBtn(this.value)" value="' + id + '">Cancel Tour</button>' +
-						  '</div>' +
-					    '</div>' +
-					'</div>';
-			$('#userTourPanel').append(html);
-		});
-	}
+	var ajax = $.ajax('/tours/addComment/' + tripId, {
+		type: 'PUT',
+		data: JSON.stringify(newComment),
+		dataType: 'json',
+		contentType: 'application/json'
+	}).done(function(data) {
+		console.log(data);
+		console.log('completed comment put');
+		that.getJoinedTours();
+		that.getCreatedTours();
+	}).fail(function(error) {
+		console.log(error);
+		console.log('could not complete comment put');
+	})
 }
 
 var currentUser = new CurrentUser();
@@ -493,8 +489,10 @@ function leaveTourBtn(id) {
 	currentUser.leaveTour(id);
 }
 
-function postCommentBtn(id) {
-	currentUser.addComment(id);
+function enterPushed(event, comment, id) {
+    if(event.which == 13) {
+    	currentUser.addComment(comment, id);
+    }
 }
 
 function cancelTourBtn(id) {
