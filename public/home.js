@@ -66,6 +66,16 @@ CurrentUser.prototype.editUser = function() {
 	});
 }
 CurrentUser.prototype.editUserProfile = function() {
+	$('#modName').val(this.specs.name);
+	$('#modEmail').val(this.specs.email);
+	$('#modLocation').val(this.specs.residence);
+	$('#modExperienceLevel').val(this.specs.experienceLevel);
+	if (this.specs.gear == 'Yes') {
+		$('#modGearCheck').prop('checked', true);
+	} 
+	else if (this.specs.gear == 'No') {
+		$('#modGearCheck').prop('checked', false);
+	}
 	var that = this;
 	$('#profileModalBody').hide();
 	$('#editFooter').hide();
@@ -193,6 +203,17 @@ CurrentUser.prototype.displayCreatedTours = function() {
 			var id = item._id;
 			var organizer = item.createdBy;
 			var location = item.location;
+			function avyLink() {
+				if (location == "Salt Lake City") {
+					return "salt-lake";
+				}
+				else if (location == "Abajos") {
+					return "abajo";
+				}
+				else {
+					return location;
+				}
+			}
 			var area = item.area;
 			var d = new Date(item.date);
 			var date = d.toDateString();
@@ -200,7 +221,7 @@ CurrentUser.prototype.displayCreatedTours = function() {
 			var difficulty = item.difficulty;
 			var party = '';
 			var getParty = item.usersGoing.forEach(function(item) {
-				party += '<a href=""><u>' + item + '</u> </a>';
+				party += '<a href="#"><u>' + item + '</u> </a>';
 			});
 			var comments = '';
 			var getComments = item.comments.forEach(function(item) {
@@ -223,17 +244,20 @@ CurrentUser.prototype.displayCreatedTours = function() {
 					    '</div>' +
 					    '<div id="planTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="planTourHeading' + index + '">' +
 					      '<div class="panel-body">' +
-					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+					      	'<h4>Tour Organizer: <a href="#"><u>' + organizer + '</u></a></h4>' +
 					        '<h4>Difficulty: ' + difficulty + '</h4>' +
 					        '<h4>Members Going: ' + party + '</h4>' +
+					        '<p>View the Utah Avalanche Center advisory for this area <a target="_blank" href="https://utahavalanchecenter.org/advisory/' + avyLink() + '"><u>here.</u></a>' +
 					        '<h4>Comments:</h4>' +
 					        '<div id="commentsDiv">' + comments + '</div>' +
 					        '<div id="addCommentsDiv">' +
 					          '<br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" id="' + id + '" placeholder="Enter new comment here."></textarea><br>' +
+					          '<p>Press "Enter" to post comment.' +
 					        '</div>' +					        
 					      '</div>' +
 					      '<div class="panel-footer">' +
-							  '<button type="button" class="btn btn-link" onclick="cancelTourBtn(this.value)" value="' + id + '"><span class="text-danger">Cancel Tour</span></button>' +
+							  '<button type="button" style="float: right;" class="btn btn-link" onclick="cancelTourBtn(this.value)" value="' + id + '"><span class="text-danger">Cancel Tour</span></button>' +
+							  '<button type="button" class="btn btn-link" data-toggle="collapse" href="#planTourCollapse' + index + '">Collapse</button>' +
 						  '</div>' +
 					    '</div>' +
 					'</div>';
@@ -298,6 +322,17 @@ CurrentUser.prototype.displayJoinedTours = function() {
 			var id = item._id;
 			var organizer = item.createdBy;
 			var location = item.location;
+			function avyLink() {
+				if (location == "Salt Lake City") {
+					return "salt-lake";
+				}
+				else if (location == "Abajos") {
+					return "abajo";
+				}
+				else {
+					return location;
+				}
+			}
 			var area = item.area;
 			var d = new Date(item.date);
 			var date = d.toDateString();
@@ -305,7 +340,7 @@ CurrentUser.prototype.displayJoinedTours = function() {
 			var difficulty = item.difficulty;
 			var party = '';
 			var getParty = item.usersGoing.forEach(function(item) {
-				party += '<a href=""><u>' + item + '</u> </a>';
+				party += '<a href="#"><u>' + item + '</u> </a>';
 			});
 			var comments = '';
 			var getComments = item.comments.forEach(function(item) {
@@ -328,17 +363,20 @@ CurrentUser.prototype.displayJoinedTours = function() {
 					    '</div>' +
 					    '<div id="joinTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="joinTourHeading' + index + '">' +
 					      '<div class="panel-body">' +
-					      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+					      	'<h4>Tour Organizer: <a href="#"><u>' + organizer + '</u></a></h4>' +
 					        '<h4>Difficulty: ' + difficulty + '</h4>' +
 					        '<h4>Members Going: ' + party + '</h4>' +
+					        '<p>View the Utah Avalanche Center advisory for this area <a target="_blank" href="https://utahavalanchecenter.org/advisory/' + avyLink() + '"><u>here.</u></a>' +
 					        '<h4>Comments:</h4>' +
 					        '<div id="commentsDiv">' + comments + '</div>' +
 					        '<div id="addCommentsDiv">' +
 					          '<br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" id="' + id + '" placeholder="Enter new comment here."></textarea><br>' +
+					          '<p>Press "Enter" to post comment.' +
 					        '</div>' +
 					      '</div>' +
 					      '<div class="panel-footer">' +
-							  '<button type="button" class="btn btn-primary" onclick="leaveTourBtn(this.value)" value="' + id + '">Leave Tour</button>' +
+							  '<button type="button" style="float: right;" class="btn btn-link" onclick="leaveTourBtn(this.value)" value="' + id + '"><span class="text-danger">Leave Tour</span></button>' +
+							  '<button type="button" class="btn btn-link" data-toggle="collapse" href="#joinTourCollapse' + index + '">Collapse</button>' +							  
 						  '</div>' +
 					    '</div>' +
 					'</div>';
@@ -387,6 +425,17 @@ CurrentUser.prototype.displayTourByLocation = function(tours) {
 		var organizer = item.createdBy;
 		var id = item._id;
 		var location = item.location;
+		function avyLink() {
+			if (location == "Salt Lake City") {
+				return "salt-lake";
+			}
+			else if (location == "Abajos") {
+				return "abajo";
+			}
+			else {
+				return location;
+			}
+		}
 		var area = item.area;
 		var d = new Date(item.date);
 		var date = d.toDateString();
@@ -417,14 +466,16 @@ CurrentUser.prototype.displayTourByLocation = function(tours) {
 				    '</div>' +
 				    '<div id="locationTourCollapse' + index + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="locationTourHeading' + index + '">' +
 				      '<div class="panel-body">' +
-				      	'<h4>Tour Organizer: <a href="">' + organizer + '</a></h4>' +
+				      	'<h4>Tour Organizer: <a href="#"><u>' + organizer + '</u></a></h4>' +
 				        '<h4>Difficulty: ' + difficulty + '</h4>' +
 				        '<h4>Members Going: ' + party + '</h4>' +
+					    '<p>View the Utah Avalanche Center advisory for this area <a target="_blank" href="https://utahavalanchecenter.org/advisory/' + avyLink() + '"><u>here.</u></a>' +
 				        '<h4>Comments:</h4>' +
 					    '<div id="commentsDiv">' + comments + '</div>' +
 				      '</div>' +
 				      '<div class="panel-footer">' +
-						  '<button type="button" class="btn btn-primary" onclick="joinTourBtn(this.value)" value="' + id + '">Join Tour</button>' +
+						  '<button type="button" class="btn btn-link" data-toggle="collapse" href="#locationTourCollapse' + index + '">Collapse</button>' +							  
+						  '<button type="button" style="float: right;" class="btn btn-primary" onclick="joinTourBtn(this.value)" value="' + id + '">Join Tour</button>' +
 					  '</div>' +
 				    '</div>' +
 				'</div>';
@@ -457,7 +508,9 @@ var currentUser = new CurrentUser();
 function currentUserControl(user) {
 	currentUser.getUser(user);
     $('#deleteAcctBtn').click(function() {
-		currentUser.deleteAccount();
+    	if (confirm("Are you sure you want to delete this Account? Any tours you have sheduled will be lost.") == true) {
+			currentUser.deleteAccount();
+    	} 
 	});
 	$('#profileBtn').click(function() {
 		$('#profileModal').modal('show');
@@ -485,8 +538,12 @@ function joinTourBtn(id) {
 	currentUser.joinTour(id);
 }
 
+
+
 function leaveTourBtn(id) {
-	currentUser.leaveTour(id);
+    if (confirm("Are you sure you want to leave this tour?") == true) {
+		currentUser.leaveTour(id);
+    } 
 }
 
 function enterPushed(event, comment, id) {
@@ -496,7 +553,9 @@ function enterPushed(event, comment, id) {
 }
 
 function cancelTourBtn(id) {
-	currentUser.deleteTour(id);
+	if (confirm("Are you sure you want to leave this tour?") == true) {
+		currentUser.deleteTour(id);
+    } 
 }
 
 function readURL(input) {

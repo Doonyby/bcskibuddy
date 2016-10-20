@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	$('#par').html('<p>client.js is working.</p>');
 
 	$('#newAccountBtn').click(function() {
 		$('#newAccountModal').modal('show');

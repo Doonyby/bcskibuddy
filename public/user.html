@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
 	<script type="text/javascript" src="home.js"></script>
 </head>
-<body>
+<body id="userBody">
 	<nav class="navbar navbar-inverse">
 	  <div class="container-fluid">
 	  	  <div class="navbar-header">
@@ -29,50 +29,52 @@
 	</nav>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-3"></div>
-			<div class="col-md-6" id="existingAccount">
-				<div id="userTourDisplay">
-					<h1>My Organized Tours</h1>
-					<button type="button" class="btn btn-xs btn-primary" id="tourModalBtn">Create Tour</button><br><br>
-					<div class="panel-group" id="userTourPanel">
-					  
+			<div class="col-md-6 col-md-offset-3" id="existingAccount">
+				<div class="panel panel-default" id="userTourDisplay">
+					<div class="panel-body">
+						<h1>My Organized Tours</h1>
+						<button type="button" class="btn btn-xs btn-primary" id="tourModalBtn">Create Tour</button><br><br>
+						<div class="panel-group" id="userTourPanel">
+						  
+						</div>
 					</div>
 				</div>
-				<div id="joinedToursDisplay">
-					<h1>My Joined Tours</h1>
-					<div class="panel-group" id="joinedTourPanel">
-					  
+				<div class="panel panel-default" id="joinedToursDisplay">
+					<div class="panel-body">
+						<h1>My Joined Tours</h1>
+						<div class="panel-group" id="joinedTourPanel">
+						  
+						</div>
 					</div>
 				</div>
-				<div id="tourByLocation">
-				  <div id="selectTourByLocation">
-					<h1>Upcoming Ski Tours</h1>
-					<p>Choose a location below to display, browse, and join upcoming planned ski trips for that location.</p>
-					<form id="tourByLocationForm">
-						<div class="form-group">
-							<select class="form-control" id="browseTourByLocation">
-						      <option value="SeeAll">See All Locations</option>
-							  <option value="Logan">Logan</option>
-							  <option value="Ogden">Ogden</option>
-							  <option value="Salt Lake City">Salt Lake City</option>
-							  <option value="Provo">Provo</option>
-							  <option value="Uintas">Uintas</option>
-							  <option value="Skyline">Skyline</option>
-							  <option value="Moab">Moab</option>
-							  <option value="Abajos">Abajos</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<input type="submit" id="tourByLocationBtn">
-						</div>
-					</form>
-				  </div><br>
-				  <div id="noToursByLocationDisplay"></div>
-				  <div id="displayTourByLocation">
-					<div class="panel-group" id="joinTourByLocationPanel">
-					  
+				<div class="panel panel-default" id="tourByLocation">
+					<div class="panel-body">
+					  <div id="selectTourByLocation">
+						<h1>Upcoming Ski Tours</h1>
+						<p>Choose a location below to display, browse, and join upcoming planned ski trips for that location.</p>
+						<form id="tourByLocationForm">
+							<div class="form-group">
+								<select class="form-control" id="browseTourByLocation">
+							      <option value="SeeAll">See All Locations</option>
+								  <option value="Logan">Logan</option>
+								  <option value="Ogden">Ogden</option>
+								  <option value="Salt Lake City">Salt Lake City</option>
+								  <option value="Provo">Provo</option>
+								  <option value="Uintas">Uintas</option>
+								  <option value="Skyline">Skyline</option>
+								  <option value="Moab">Moab</option>
+								  <option value="Abajos">Abajos</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<input type="submit" id="tourByLocationBtn">
+							</div>
+						</form>
+					  </div><br>
+					  <div id="displayTourByLocation">
+					    <div class="panel-group" id="joinTourByLocationPanel"></div>
+					  </div>
 					</div>
-				  </div>
 				</div>
 				<!-- sign in modal -->
 				<div id="oldAccountModal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -169,7 +171,6 @@
 				        <h4 class="modal-title">User Profile</h4>
 				      </div>
 				      <div class="modal-body" id="profileModalBody">
-				        <p>This will be a profile body mostly created in client. Clicking the "edit profile" button, your profile will be put into a form where if you save changes, it will direct to an update endpoint.</p>
 				        <p id='editProfileFormScrewUp'></p>
 				        <ul id="profileList">
 				        	<li id="profileName">Name</li>
@@ -178,8 +179,7 @@
 							<li id="profilePic">Picture</li>
 				        	<li id="profileLocation">Location</li>
 				        	<li id="profileExperience">Experience Level</li>
-				        	<li id="profileGear">Beacon, Shovel, Probe</li><br><br><hr>
-				        	<li id="deleteProfile"><a id="deleteAcctBtn" style="color:red" href="#deleteAcctBtn">Delete Account</a></li>
+				        	<li id="profileGear">Beacon, Shovel, Probe</li><br><br>
 				        </ul>
 				      </div>
 				      <div hidden class="modal-body" id="modProfileForm">
@@ -229,8 +229,9 @@
 						</form>
 				      </div>
 				      <div class="modal-footer" id="editFooter">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+				      	<a style="float: left; color:red" id="deleteAcctBtn" href="#deleteAcctBtn">Delete Account</a></li>
+					    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					    <button type="button" class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
 				      </div>
 				      <div hidden class="modal-footer" id="saveFooter">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -305,7 +306,6 @@
 				  </div>
 				</div><!-- /create tour modal -->
 			</div>
-			<div class="col-md-3"></div>
 		</div>
 	</div>
 </body>
