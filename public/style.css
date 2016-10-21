@@ -1,11 +1,16 @@
 body {
 	background-color: black;
+	font-family: 'Proza Libre', sans-serif;
+}
+
+div > h1, h2 {
+	text-align: center;
+	font-family: 'Taviraj', serif;
 }
 
 #userBody {
-	background-image: url('http://i.imgur.com/W8Aba5J.jpg');
-	background-image: url('http://www.snowsbest.com/wp-content/uploads/2016/09/Alta.jpg');
-	background-repeat: no-repeat;
+	background: url('http://i.imgur.com/W8Aba5J.jpg') no-repeat center fixed;
+/*	background-image: url('http://www.snowsbest.com/wp-content/uploads/2016/09/Alta.jpg');*/
 	background-size: 100%;
 }
 
@@ -30,5 +35,5 @@ body {
 }
 
 #indexBody a {
-	color: red;
+	color: black;
 }

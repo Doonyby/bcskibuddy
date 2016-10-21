@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>bcskibuddy</title>
-	<link rel="stylesheet" type="text/css" href="/bootstrapCss/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript" src="client.js"></script>
+    <meta charset="UTF-8">
+    <title>bcskibuddy</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrapCss/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Proza+Libre|Taviraj" rel="stylesheet">
+    <script type="text/javascript" src="/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="client.js"></script>
 
 </head>
 <body id="indexBody">
-	<div class="containter">
-		<div class="row" id="siteIntro">
-			<div class="col-md-6 col-md-offset-3" id="indexDiv">
-				<h1 style="color: white;">Welcome to Back Country Ski Buddy!</h1><hr>
-				<p style="color: white;">This app is designed for the backcountry skiers/splitboarders in Utah to reach a higher level of safety by always finding comapanions to join in on your back country tours.  <strong><span style="color: red">DON'T GO ALONE!!!</span></strong>  Not only will you be using better safety practices, but you'll get to know other back country friends while enjoying the amazing mountains that Utah has to offer.  Join the Utah back country community and make an account below.</p>
-				<p style="color: white;">For more information about this site, click <a href="/info">here</a>.</p><br>
-			</div>
-		</div>
-		<div class="row" id="loginDiv">
-			<div class="col-md-6 col-md-offset-3" id="newAccount">
-				<p style="color: white;">New to bcskibuddy? Create an account <a id="newAccountBtn" href="#newAccountBtn">here</a>!</p>
-				<!-- sign up modal -->
-				<div id="newAccountModal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-				  <div class="modal-dialog modal-sm" role="document">
-				    <div class="modal-content">
-					  <div class="modal-header">
-					    <span class="close" id="closeNewAccountModal">×</span>
-					    <h4>Please sign up below.</h4>
-					    <p id='formScrewUp'></p>
-					  </div>
-					  <div class="modal-body">
-					    <form id="newAcctForm">
-					      <div class="form-group">
-						    <label>Name</label>
-						    <input type="text" class="form-control" id="name" placeholder="name">
-						  </div>
-						  <div class="form-group">
-						    <label>Username</label>
-						    <input type="text" class="form-control" id="username" placeholder="username">
-						  </div>
-						  <div class="form-group">
-						    <label>Password</label>
-						    <input type="password" class="form-control" id="password" placeholder="password">
-						  </div>
-						  <div class="form-group">
-						    <label>Confirm Password</label>
-						    <input type="password" class="form-control" id="password2" placeholder="confirm password">
-						  </div>
-						  <div class="form-group">
-							<input type="submit" id="newAcctSubmit">
-						  </div>
-					    </form>
-					  </div>
-					  <div class="modal-footer">
-					    <p style="color: red;">All fields are required.</p>
-					  </div>
-				    </div>
-				  </div>
-				</div>
-				<!-- /sign up modal -->
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3" id="existingAccount">
-				<p style="color: white;">If you already have an account, please login <a id="oldAccountBtn" href="#oldAccountBtn">here</a>!</p>
-			</div>
-		</div>
-	</div>	
+  <div class="containter">
+    <div class="row" id="siteIntro">
+      <div class="col-md-6 col-md-offset-3" id="indexDiv">
+        <h1 style="color: white;">Welcome to Back Country Ski Buddy!</h1><hr>
+        <p style="color: white;">This app is designed for the backcountry skiers/splitboarders in Utah to reach a higher level of safety by always finding comapanions to join in on your back country tours.  <strong><span style="color: red">DON'T GO ALONE!!!</span></strong>  Not only will you be using better safety practices, but you'll get to know other back country friends while enjoying the amazing mountains that Utah has to offer.  Join the Utah back country community and make an account below.</p>
+        <p style="color: white;">For more information about this site, click <a href="/info">here</a>.</p><br>
+      </div>
+    </div>
+    <div class="row" id="loginDiv">
+      <div class="col-md-6 col-md-offset-3" id="newAccount">
+        <h5 style="color: white;">New to bcskibuddy? Create an account <a id="newAccountBtn" href="#newAccountBtn">here</a>!</h5>
+        <!-- sign up modal -->
+        <div id="newAccountModal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <span class="close" id="closeNewAccountModal">×</span>
+                <h4>Please sign up below.</h4>
+                <p id='formScrewUp'></p>
+              </div>
+              <div class="modal-body">
+                <form id="newAcctForm">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="name">
+                  </div>
+                  <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="username">
+                  </div>
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="password">
+                  </div>
+                  <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" id="password2" placeholder="confirm password">
+                  </div>
+                  <div class="form-group">
+                    <input type="submit" id="newAcctSubmit">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <p style="color: red;">All fields are required.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- /sign up modal -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" id="existingAccount">
+        <h5 style="color: white;">If you already have an account, please login <a id="oldAccountBtn" href="#oldAccountBtn">here</a>!</h5>
+      </div>
+    </div>
+  </div>  
 </body>
 </html>
