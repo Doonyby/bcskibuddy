@@ -39,10 +39,11 @@ CurrentUser.prototype.getUser = function(user) {
             that.buildHomePage();
         }
     }).fail(function(error) {
-        if (error.responseJSON.message = "Username does not exist") {
-            $('#signInFormScrewUp').text("Username does not exist. If you don't have an account with us," + 
-                " please close the window and create an account.").css('color', 'red');
-        }
+        console.log(error);
+        // if (error.responseJSON.message = "Username does not exist") {
+        //     $('#signInFormScrewUp').text("Username does not exist. If you don't have an account with us," + 
+        //         " please close the window and create an account.").css('color', 'red');
+        // }
     });
 };
 CurrentUser.prototype.editUser = function() {

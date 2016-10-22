@@ -50,7 +50,7 @@ function submitNewAcctForm() {
 }
 
 var addNewUser = function(name, username, password) {
-    var user = {'name':name, 'username': username, 'password': password};
+    var user = {'name': name, 'username': username, 'password': password};
     var ajax = $.ajax('/users', {
         type: 'POST',
         data: JSON.stringify(user),

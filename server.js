@@ -55,7 +55,7 @@ app.get('/user', function(req, res) {
 });
 
 var strategy = new BasicStrategy(function(username, password, callback) {
-    User.findOne({username: username}, function(err, user) {
+    Users.findOne({username: username}, function(err, user) {
         if(err) {
             callback(err);
             return;
@@ -66,6 +66,7 @@ var strategy = new BasicStrategy(function(username, password, callback) {
             });
         }
         user.validatePassword(password, function(err, isValid) {
+            console.log(password);
             if (err) {
                 return callback(err);
             }
@@ -87,6 +88,13 @@ app.get('/hidden', passport.authenticate('basic', {session: false}), function(re
         message: 'Luke... I am your father'
     });
 });
+
+// app.get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
+//     res.json({
+//         message: 'Luke... I am your father'
+//     });
+
+// });
 
 app.get('/users/:username', function(req, res) {
     Users.findOne({username: req.params.username}, function(err, items) {
@@ -179,7 +187,7 @@ app.post('/users', jsonParser, function(req, res) {
                         message: 'Internal Server Error'
                     });
                 }
-                return res.status(201).json({});
+                return res.status(201).json(user);
             });
         });
     });
@@ -263,7 +271,7 @@ app.get('/tours/searchLocation/:location', function(req, res) {
                     message: 'Internal Server Error'
                 });
             }
-            res.json(items);
+            return res.status(200).json(items);
         });
     }
     
@@ -333,7 +341,7 @@ app.get('/tours/userCreated/:username', function(req, res) {
                 message: 'Internal Server Error'
             });
         }
-        res.json(items);
+        res.status(201).json(items);
     });
 });
 
@@ -344,7 +352,7 @@ app.get('/tours/userJoined/:username', function(req, res) {
                 message: 'Internal Server Error'
             });
         }
-        res.json(items);
+        res.status(201).json(items);
     });
 });
 
