@@ -24,10 +24,6 @@ var UserSchema = new mongoose.Schema({
 	gear: {
 		type: String
 	},
-	picture: {
-		data: Buffer,
-		contentType: String
-	},
 	email: {
 		type: String
 	}

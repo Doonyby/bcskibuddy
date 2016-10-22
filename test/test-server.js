@@ -125,10 +125,6 @@ describe('bcskibuddy', function() {
                 'residence': 'Salt Lake City',
                 'experienceLevel': 'Very',
                 'gear': 'No',
-                'picture': {
-                    'data': './public/images/Portrait_placeholder.png',
-                    'contentType': null
-                },
                 'email': 'trudy@dsadsd',
                 '_id': '580aa2afa0d976984f893207',
             }

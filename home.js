@@ -49,15 +49,12 @@ CurrentUser.prototype.getUser = function(user) {
 CurrentUser.prototype.editUser = function() {
     $('#userSetUpModal').modal('show');
     $('#userSetUpTitle').text('Hi ' + this.specs.name + '! Welcome to BCskibuddy!!!');
-    this.specs.picture = {};
     var that = this;
     $('#userSetUpBtn').click(function() {
         var gearCheck = 'No';
         if ($('#setGearCheck').prop('checked')) {
             gearCheck = 'Yes';
         }
-        that.specs.picture.data = './public/' + $('#setUserPic').attr('src');
-        that.specs.picture.contentType = "image/jpg";
         that.specs.residence = $('#setLocation').val();
         that.specs.experienceLevel = $('#setExperienceLevel').val();
         that.specs.gear = gearCheck;
@@ -85,8 +82,6 @@ CurrentUser.prototype.editUserProfile = function() {
     $('#saveProfileBtn').click(function() {
         that.specs.name = $('#modName').val();
         that.specs.email = $('#modEmail').val();
-        that.specs.picture.data = './public/' + $('#modUserPic').attr('src');
-        that.specs.picture.contentType = "image/png";
         that.specs.residence = $('#modLocation').val();
         that.specs.experienceLevel = $('#modExperienceLevel').val();
         var gearCheck = 'No';
@@ -128,13 +123,10 @@ CurrentUser.prototype.deleteAccount = function() {
     });
 }
 CurrentUser.prototype.buildHomePage = function() {
-    //console.log(this.specs.picture);
     $('#navTitle').text(this.specs.name.toUpperCase() + "'s Home Page");
-    //$('#brandPic').attr('src', 'data:image/jpg;base64,' + this.specs.picture.data.data.toString('base64'));
     $('#profileName').text("Name: " + this.specs.name);
     $('#username').text("Username: " + this.specs.username);    
     $('#email').text("Email: " + this.specs.email);
-    $('#profilePic').text("Picture: " + this.specs.picture.data);
     $('#profileLocation').text("Location: " + this.specs.residence);
     $('#profileExperience').text("Experience level: " + this.specs.experienceLevel);
     $('#profileGear').text("Beacon, Shovel, and Probe: " + this.specs.gear);
@@ -227,9 +219,6 @@ CurrentUser.prototype.displayCreatedTours = function() {
             var comments = '';
             var getComments = item.comments.forEach(function(item) {
                 comments += '<div class="media">' +
-                              '<div class="media-left">' +
-                                '<img class="media-object" src="' + item.picData + '" alt="...">' +
-                              '</div>' +
                               '<div class="media-body">' +
                                 '<h5 class="media-heading"><a href="#"><u>' + item.username + '</u></a></h5>' +
                                 '<p>' + item.comment + '</p>' +
@@ -346,9 +335,6 @@ CurrentUser.prototype.displayJoinedTours = function() {
             var comments = '';
             var getComments = item.comments.forEach(function(item) {
                 comments += '<div class="media">' +
-                              '<div class="media-left">' +
-                                '<img class="media-object" src="' + item.picData + '" alt="...">' +
-                              '</div>' +
                               '<div class="media-body">' +
                                 '<h5 class="media-heading"><a href="#"><u>' + item.username + '</u></a></h5>' +
                                 '<p>' + item.comment + '</p>' +
@@ -449,9 +435,6 @@ CurrentUser.prototype.displayTourByLocation = function(tours) {
         var comments = '';
         var getComments = item.comments.forEach(function(item) {
             comments += '<div class="media">' +
-                          '<div class="media-left">' +
-                            '<img class="media-object" src="' + item.picData + '" alt="...">' +
-                          '</div>' +
                           '<div class="media-body">' +
                             '<h5 class="media-heading"><a href="#"><u>' + item.username + '</u></a></h5>' +
                             '<p>' + item.comment + '</p>' +
@@ -557,16 +540,4 @@ function cancelTourBtn(id) {
     if (confirm("Are you sure you want to leave this tour?") == true) {
         currentUser.deleteTour(id);
     } 
-}
-
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#userPic').attr('src', e.target.result).width(140).height(140);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
 }

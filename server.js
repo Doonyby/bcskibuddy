@@ -10,7 +10,6 @@ var BasicStrategy = require('passport-http').BasicStrategy;
 var config = require('./config');
 var Users = require('./models/user.js');
 var Tours = require('./models/tour.js');
-var fs = require('fs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use('/jquery', express.static('./node_modules/jquery/dist/'));
@@ -208,8 +207,6 @@ app.put('/users/:id', function(req, res) {
         item.residence = req.body.residence;
         item.experienceLevel = req.body.experienceLevel;
         item.gear = req.body.gear;
-        item.picture.data = fs.readFileSync(req.body.picture.data);
-        item.picture.contentType = req.body.picture.contentType;
         item.email = req.body.email;
         item.save(function(err) {
             if (err) {
