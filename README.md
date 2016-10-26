@@ -21,10 +21,10 @@ and in avalanche/injury rescues if needs be.
 
 Technology
 ----------
--This app was designed to specifically target nodejs technologies.
--Front end was made with bootstrap and jquery.
--Back end included express, mongoosejs, passport, body-parser.
--Development tools include moch, chai, and chai http.
+- This app was designed to specifically target nodejs technologies.
+- Front end was made with bootstrap and jquery.
+- Back end included express, mongoosejs, passport, body-parser.
+- Development tools include moch, chai, and chai http.
 
 
 
