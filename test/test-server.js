@@ -1,3 +1,4 @@
+global.DATABASE_URL = 'mongodb://localhost/bcskibuddy';
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../server.js');
