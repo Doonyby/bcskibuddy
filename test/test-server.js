@@ -1,8 +1,8 @@
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../server.js');
-var Users = require('../models/user.js');
-var Tours = require('../models/tour.js');
+var Users = require('../public/models/user.js');
+var Tours = require('../public/models/tour.js');
 
 var should = chai.should();
 var app = server.app;
@@ -39,40 +39,41 @@ describe('bcskibuddy', function() {
     });
 });
 
-describe('bcskibuddy', function() {
-    before(function(done) {
-        server.runServer(function() {
-            Users.create({username: 'GilesBarnet', password: 'Gilesthethird', name: 'Giles'},
-                        {username: 'MilesBarnet', password: 'Milesthethird', name: 'Miles'},
-                        {username: 'NilesBarnet', password: 'Nilesthethird', name: 'Niles'}, function() {
-                done();
-            });
-        });
-    });
-    it('should retrieve user on GET', function(done) {
-        chai.request(app)
-            .get('/users/' + 'GilesBarnet')
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.username.should.be.a('string');
-                res.body.username.should.equal('GilesBarnet');
-                res.body.password.should.equal('Gilesthethird');
-                res.body.name.should.equal('Giles');
-                res.body.should.have.property('_id');
-                res.body.should.have.property('username');
-                res.body.should.have.property('password');
-                res.body.should.have.property('name');
-                res.body.password.should.be.a('string');
-                done();
-            });
-    });
-    after(function(done) {
-        Users.remove(function() {
-            done();
-        });
-    });
-});
+// describe('bcskibuddy', function() {
+//     before(function(done) {
+//         server.runServer(function() {
+//             Users.create({username: 'GilesBarnet', password: 'Gilesthethird', name: 'Giles'},
+//                         {username: 'MilesBarnet', password: 'Milesthethird', name: 'Miles'},
+//                         {username: 'NilesBarnet', password: 'Nilesthethird', name: 'Niles'}, function() {
+//                 done();
+//             });
+//         });
+//     });
+//     it('should retrieve user on POST', function(done) {
+//         chai.request(app)
+//             .post('/login')
+//             .send({username: 'GilesBarnet', password: 'Gilesthethird'})
+//             .end(function(err, res) {
+//                 res.should.have.status(200);
+//                 res.should.be.json;
+//                 res.body.username.should.be.a('string');
+//                 res.body.username.should.equal('GilesBarnet');
+//                 res.body.password.should.equal('Gilesthethird');
+//                 res.body.name.should.equal('Giles');
+//                 res.body.should.have.property('_id');
+//                 res.body.should.have.property('username');
+//                 res.body.should.have.property('password');
+//                 res.body.should.have.property('name');
+//                 res.body.password.should.be.a('string');
+//                 done();
+//             });
+//     });
+//     after(function(done) {
+//         Users.remove(function() {
+//             done();
+//         });
+//     });
+// });
 
 describe('bcskibuddy', function() {
     before(function(done) {

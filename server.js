@@ -6,15 +6,12 @@ var jsonParser = bodyParser.json();
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var passport = require('passport');
-var BasicStrategy = require('passport-http').BasicStrategy;
+var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config');
-var Users = require('./models/user.js');
-var Tours = require('./models/tour.js');
+var Users = require('./public/models/user.js');
+var Tours = require('./public/models/tour.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
-app.use('/jquery', express.static('./node_modules/jquery/dist/'));
-app.use('/bootstrap', express.static('./node_modules/bootstrap/dist/js/'));
-app.use('/bootstrapCss', express.static('./node_modules/bootstrap/dist/css'));
 
 var runServer = function(callback) {
     mongoose.connect(config.DATABASE_URL, function(err) {
@@ -53,7 +50,7 @@ app.get('/user', function(req, res) {
 	res.status(200);
 });
 
-var strategy = new BasicStrategy(function(username, password, callback) {
+passport.use(new LocalStrategy(function(username, password, callback) {
     Users.findOne({username: username}, function(err, user) {
         if(err) {
             callback(err);
@@ -65,7 +62,6 @@ var strategy = new BasicStrategy(function(username, password, callback) {
             });
         }
         user.validatePassword(password, function(err, isValid) {
-            console.log(password);
             if (err) {
                 return callback(err);
             }
@@ -77,38 +73,12 @@ var strategy = new BasicStrategy(function(username, password, callback) {
             return callback(null, user);
         });
     });
-});
+}));
 
-passport.use(strategy);
 app.use(passport.initialize());
 
-app.get('/hidden', passport.authenticate('basic', {session: false}), function(req, res) {
-    res.json({
-        message: 'Luke... I am your father'
-    });
-});
-
-// app.get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
-//     res.json({
-//         message: 'Luke... I am your father'
-//     });
-
-// });
-
-app.get('/users/:username', function(req, res) {
-    Users.findOne({username: req.params.username}, function(err, items) {
-        if (err) {
-            return res.status(500).json({
-                message: 'Internal Server Error'
-            });
-        }
-        if (!items) {
-            return res.status(500).json({
-                message: 'Username does not exist'
-            });
-        }
-        res.json(items);
-    });
+app.post('/login', passport.authenticate('local', {session: false}), function(req, res) {
+    res.json(req.user);
 });
 
 app.post('/users', jsonParser, function(req, res) {

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    currentUser.clearCurrentUser();
     $('#oldAccountModal').modal('show');
 
     $('#closeOldAccountModal').click(function() {
@@ -11,7 +12,34 @@ $(document).ready(function() {
             username: $('#existingUsername').val(),
             password: $('#existingPassword').val()
         }
-        currentUserControl(user);
+        currentUser.getUser(user);
+        
+    });
+    
+    $('#deleteAcctBtn').click(function() {
+        if (confirm("Are you sure you want to delete this Account? Any tours you have sheduled will be lost.") == true) {
+            currentUser.deleteAccount();
+        } 
+    });
+    $('#profileBtn').click(function() {
+        $('#profileModal').modal('show');
+        $('#modProfileForm').hide();
+        $('#saveFooter').hide();
+        $('#profileModalBody').show();
+        $('#editFooter').show();
+    });
+    $('#editProfileBtn').click(function() {
+        currentUser.editUserProfile();
+    });
+    $('#tourModalBtn').click(function() {
+        $('#createTourModal').modal('show');
+    });
+    $('#createTourBtn').click(function() {
+        currentUser.createTour();
+    });
+    $('#tourByLocationForm').submit(function(e) {
+        e.preventDefault();
+        currentUser.getTourByLocationList();
     });
 });
 
@@ -22,8 +50,8 @@ var CurrentUser = function() {
 }
 CurrentUser.prototype.getUser = function(user) {
     var that = this;
-    var ajax = $.ajax('/users/' + user.username, {
-        type: 'GET',
+    var ajax = $.ajax('/login', {
+        type: 'POST',
         data: JSON.stringify(user),
         dataType: 'json',
         contentType: 'application/json'
@@ -40,10 +68,10 @@ CurrentUser.prototype.getUser = function(user) {
         }
     }).fail(function(error) {
         console.log(error);
-        // if (error.responseJSON.message = "Username does not exist") {
-        //     $('#signInFormScrewUp').text("Username does not exist. If you don't have an account with us," + 
-        //         " please close the window and create an account.").css('color', 'red');
-        // }
+        if (error) {
+            $('#signInFormScrewUp').text("Username and/or Password are incorrect. If you don't have an account with us," + 
+                " please close the window and create an account.  Otherwise, try again.").css('color', 'red');
+        }
     });
 };
 CurrentUser.prototype.editUser = function() {
@@ -105,7 +133,6 @@ CurrentUser.prototype.updateUser = function() {
         contentType: 'application/json'
     }).done(function() {
         console.log('completed a put');
-        console.log(that.specs);
         that.buildHomePage();
     }).fail(function() {
         console.log('there is an error on put');
@@ -123,6 +150,7 @@ CurrentUser.prototype.deleteAccount = function() {
     });
 }
 CurrentUser.prototype.buildHomePage = function() {
+    console.log(this.specs);
     $('#navTitle').text(this.specs.name.toUpperCase() + "'s Home Page");
     $('#profileName').text("Name: " + this.specs.name);
     $('#username').text("Username: " + this.specs.username);    
@@ -487,36 +515,14 @@ CurrentUser.prototype.addComment = function(comment, tripId) {
     })
 }
 
-var currentUser = new CurrentUser();
+CurrentUser.prototype.clearCurrentUser = function() {
+    console.log('clear user has been called');
+    this.specs = {};
+    this.toursPlanned = [];
+    this.toursJoined = [];
+}
 
-function currentUserControl(user) {
-    currentUser.getUser(user);
-    $('#deleteAcctBtn').click(function() {
-        if (confirm("Are you sure you want to delete this Account? Any tours you have sheduled will be lost.") == true) {
-            currentUser.deleteAccount();
-        } 
-    });
-    $('#profileBtn').click(function() {
-        $('#profileModal').modal('show');
-        $('#modProfileForm').hide();
-        $('#saveFooter').hide();
-        $('#profileModalBody').show();
-        $('#editFooter').show();
-    });
-    $('#editProfileBtn').click(function() {
-        currentUser.editUserProfile();
-    });
-    $('#tourModalBtn').click(function() {
-        $('#createTourModal').modal('show');
-    });
-    $('#createTourBtn').click(function() {
-        currentUser.createTour();
-    });
-    $('#tourByLocationForm').submit(function(e) {
-        e.preventDefault();
-        currentUser.getTourByLocationList();
-    });
-} 
+var currentUser = new CurrentUser();
 
 function joinTourBtn(id) {
     currentUser.joinTour(id);
