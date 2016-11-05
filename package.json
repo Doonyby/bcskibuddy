@@ -2,7 +2,8 @@
   "name": "bcskibuddy",
   "version": "1.0.0",
   "engines": {
-    "node": "4.4.7"
+    "node": "4.4.7",
+    "npm": "3.8.6"
   },
   "description": "node capstone",
   "main": "server.js",
