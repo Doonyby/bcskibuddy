@@ -14,6 +14,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 var runServer = function(callback) {
+    console.log('database_url: ' + config.DATABASE_URL);
+    console.log('port: ' + config.PORT);
     mongoose.connect(config.DATABASE_URL, function(err) {
         if (err && callback) {
             return callback(err);
