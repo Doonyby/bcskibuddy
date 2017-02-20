@@ -19,10 +19,12 @@ Features
 | <img alt="Landing Page" src="./design_imgs/landingPage.png" width="350"> | <img alt="Info Page" src="./design_imgs/infoPage.png" width="350"> | <img alt="Home Page" src="./design_imgs/homePageView.png" width="350"> |
 |:---:|:---:|:---:|
 | Landing Page | Info Page | Home Page |
-- Create Profile
-- Create Tour
-- Find Tours in Specific Location
-- Join Tours
+The basic design consists of landing, information, and home pages.  Most of the functionality of the app takes place after you have logged into your home page.  At this point you can access and edit your profile, and you can move between three panels that diplay either your organized tours, your joined tours, and scheduled tours that others have created.  These are each displayed below. 
+| <img alt="Organized Tours" src="./design_imgs/organizeTourUnfocus.png" width="350"> | <img alt="Joined Tours" src="./design_imgs/joinTourFocus.png" width="350"> | <img alt="Future " src="./design_imgs/futureSkiTourfocus.png" width="350"> |
+|:---:|:---:|:---:|
+| Organized Tours | Joined Tours | Upcoming Tours |
+With each of these panels, you have the option to organize as many tours as you want, and join as many tours as you want.  Once a tour is organized or joined, there is a running comment feed that can be used for planning tour details or other conversation.  You also have the option to leave tours as well.
+
 
 Technology
 ----------
