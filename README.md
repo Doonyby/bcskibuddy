@@ -1,7 +1,6 @@
 BCSKIBUDDY
 ==========
-This is an app to find back country ski companions in your area specifically for the state of Utah.
-This is meant to improve the safety of individuals accessing the backcountry and to grow the community.
+This is a full stack app built using node.js and express to find back country ski companions in your area specifically for the state of Utah.  This is meant to improve the safety of individuals accessing the backcountry and to grow the community.
 
 Summary
 -------
@@ -35,8 +34,8 @@ Technology
 ### Front End
  - HTML5
  - CSS3
- -[Bootstrap](https://getbootstrap.com/)
- -[JQuery](https://jquery.com/)
+ - [Bootstrap](https://getbootstrap.com/)
+ - [JQuery](https://jquery.com/)
 
 ### Back End, Testing, and Deployment
  - [Node](https://nodejs.org)
