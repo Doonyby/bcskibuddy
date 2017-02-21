@@ -7,8 +7,8 @@ Summary
 -------
 As a user, after creating a profile, this app will give you access to the community of back country
 users in Utah.  On your home page, you can look up tours that other users have created and join them.  
-After joining them, you can join the conversation of that individual trip by adding comments.  
-If you wish to create a trip in a specific area, you can do so which will enable other users to join your trip.  With these methods, you will be able to access the back country with companions who can assist in group decisions and in avalanche/injury rescues if needs be.  
+After joining them, you can join the conversation of that individual tour by adding comments.  
+If you wish to create a tour in a specific area, you can do so which will enable other users to join your tour.  With these methods, you will be able to access the back country with companions who can assist in group decisions and in avalanche/injury rescues if needs be.  
 
 Live Site
 ---------
@@ -26,20 +26,35 @@ The basic design consists of landing, information, and home pages.  Most of the 
 |:---:|:---:|:---:|
 | Organized Tours | Joined Tours | Upcoming Tours |
 
-With each of these panels, you have the option to organize as many tours as you want, and join as many tours as you want.  Once a tour is organized or joined, there is a running comment feed that can be used for planning tour details or other conversation.  You also have the option to leave tours as well.
+With each of these panels, you have the option to organize as many tours as you want, and join as many tours as you want.  Once a tour is organized or joined, there is a running comment feed that can be used for planning tour details or other conversation.  When you have joined a tour, you have the link to check the avalanche and snow report for that area from the utah avalanche center, and you also have the option to edit/leave tours as well.
 
 
 Technology
 ----------
-- [Node](https://nodejs.org)
-- This app was designed to specifically target nodejs technologies.
-- Front end was made with bootstrap and jquery.
-- Back end included express, mongoosejs, passport, body-parser.
-- Development tools include mocha, chai, and chai http.
+
+### Front End
+ - HTML5
+ - CSS3
+ -[Bootstrap](https://getbootstrap.com/)
+ -[JQuery](https://jquery.com/)
+
+### Back End, Testing, and Deployment
+ - [Node](https://nodejs.org)
+ - [Express](https://expressjs.com/)
+ - [MongoDB](https://www.mongodb.com/)
+ - [Mongoose ODM](http://mongoosejs.com/)
+ - [Passport](http://passportjs.org/) - middleware for local and OAuth2.0 authentication
+ - [Bcrypt](https://www.npmjs.com/package/bcrypt) - middleware for password hashing
+ - [Mocha](https://mochajs.org/) - testing framework
+ - [Chai](http://chaijs.com/) - assertion library for Node
+ - [Travis CI](https://travis-ci.org/) - continuous integration service
+ - [Heroku](https://www.heroku.com/) - cloud PaaS
+ - [mLab](https://mlab.com/) - cloud database service
+
 
 Future Directions
 -----------------
-
+The plan for this app is to eventually incorporate more states and other popular back country ski areas so that this app isn't specific to Utah.  I would also like to add other features that would add to the social aspect of the app such as: the ability to view bits of info from other user profiles including their experience level, ablility to contact other users directly, the ability to keep track of past trips and members you've been on tours with, the ability to add pictures to profiles, attach those pictures to comment feeds/tour lists.  I also have plans to add another front end framework onto the app to make the user experience run more smoothly.
 
 
 
