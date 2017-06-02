@@ -1,6 +1,18 @@
+html {
+	box-sizing: border-box;
+	-web-font-smoothing: antialiased;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
 body {
-	background-color: black;
+	height: 100vh;
+	color: #222;
 	font-family: 'Proza Libre', sans-serif;
+	font-size: 18px;
+	line-height: 1.3;
 }
 
 div > h1, h2 {
@@ -8,32 +20,63 @@ div > h1, h2 {
 	font-family: 'Taviraj', serif;
 }
 
-#userBody {
+.textWhite {
+	color: #fff;
+}
+
+.userBody {
 	background: url('http://i.imgur.com/W8Aba5J.jpg') no-repeat center fixed;
 /*	background-image: url('http://www.snowsbest.com/wp-content/uploads/2016/09/Alta.jpg');*/
 	background-size: 100%;
 }
 
-#infoBody {
-	background-image: url('http://snowbrains.com/wp-content/uploads/2015/12/powder_avalanche.jpg');
+.infoBody {
+	height: 100%;
+	width: 100%;
+	background-color: #337ab7;
+	background-image: url('./skier.svg');
 	background-repeat: no-repeat;
-	background-size: cover;	
+	background-size: 82% 205%;
+	background-position: 95% 25%;
 }
 
-#indexBody {
-	background-image: url('http://images.nationalgeographic.com/wpf/media-live/photos/000/647/cache/skier-banana-chute-mount-ogden-utah_64705_600x450.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;		
+.infoTile {
+	margin: 40px 25% 20px 25%;
+	width: 50%;
+	height: 90%;
+	position: absolute;
+	border: 1px solid #222;
+	border-radius: 5px;
+	background-color: #fff;
+	padding: 20px 30px 20px 30px;
+	overflow: auto;
 }
 
-#infoPanel {
+.indexBody {
+	height: 100%;
+	background-color: #337ab7;
+	background-image: url('./skier.svg');
+	background-repeat: no-repeat;
+	background-size: 82% 205%;
+	background-position: 95% 25%;		
+}
+
+.indexBody a {
+	color: #fff;
+}
+
+.indexBody a:hover {
+	opacity: 0.8;
+}
+
+.landingTitle {
+	padding-top: 20px;
+}
+
+.infoPanel {
 	margin-top: 20px;
 }
 
-#indexDiv {
+.indexDiv {
 	margin-top: 20px;
-}
-
-#indexBody a {
-	color: black;
 }
