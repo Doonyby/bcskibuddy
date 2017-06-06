@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Proza+Libre|Taviraj" rel="stylesheet">
+    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!--     // <script type="text/javascript" src="./home.js"></script> -->
+</head>
+<body class="userBody">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <h4 class="navbar-text navbar-center" id="navTitle">This is a demo</h4>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenu">Menu <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a id="profileBtn" href="#profileBtn">Profile (n/a with demo)</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a id="signOutBtn" href="/">Sign Out</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" id="existingAccount">
+        <div class="panel panel-default" id="userTourDisplay">
+          <div class="panel-body">
+            <h2>My Organized Tours</h2><hr>
+            <button type="button" class="btn btn-xs btn-primary" id="tourModalBtn">Create Tour</button><br><br>
+            <div class="panel-group" id="userTourPanel">
+              <p>These are the tours that you have organized.</p>
+              <div class="panel panel-primary">
+                <div class="panel-heading collapsed" role="tab button" id="planTourHeading" data-toggle="collapse" href="#planTourCollapse" aria-expanded="false" aria-controls="planTourCollapse">
+                  <h4 class="panel-title">
+                    Salt Lake City: BCC Lake Mary and beyond, Tue Jan 17 2017: 07:00<span class="caret" style="float:right;"></span>
+                  </h4>
+                </div>
+                <div id="planTourCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="planTourHeading">
+                  <div class="panel-body">
+                    <h4>Tour Organizer: <a href="#"><u>Bob Loblaw</u></a></h4>
+                    <h4>Difficulty: Strenuous/Experienced</h4>
+                    <h4>Members Going: Bill, Joe, Pete</h4>
+                    <p>View the Utah Avalanche Center advisory for this area <a target="_blank" href="https://utahavalanchecenter.org/advisory/salt-lake"><u>here.</u></a>
+                    <h4>Comments:</h4>
+                    <div id="commentsDiv">
+                      <div class="media">
+                        <div class="media-body">
+                          <h5 class="media-heading"><a href="#"><u>Bob Loblaw</u></a></h5>
+                          <p>Glad you could join.  Gonna be a great day so pack a lunch!</p>
+                        </div>
+                      </div> 
+                    </div>
+                    <div id="addCommentsDiv">
+                      <br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" placeholder="Enter new comment here."></textarea><br>
+                      <p>Press "Enter" to post comment.</p>
+                    </div>                         
+                  </div>
+                  <div class="panel-footer">
+                      <button type="button" style="float: right;" class="btn btn-link"><span class="text-danger">Cancel Tour</span></button>
+                      <button type="button" class="btn btn-link" data-toggle="collapse" href="#planTourCollapse">Collapse</button>
+                  </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default" id="joinedToursDisplay">
+          <div class="panel-body">
+            <h2>My Joined Tours</h2><hr>
+            <div class="panel-group" id="joinedTourPanel"></div>
+          </div>
+        </div>
+        <div class="panel panel-default" id="tourByLocation">
+          <div class="panel-body">
+            <div id="selectTourByLocation">
+              <h2>Upcoming Ski Tours</h2><hr>
+              <p>Choose a location below to display, browse, and join upcoming planned ski trips for that location.</p>
+              <form id="tourByLocationForm">
+                <div class="form-group">
+                  <select class="form-control" id="browseTourByLocation">
+                    <option value="SeeAll">See All Locations</option>
+                    <option value="Logan">Logan</option>
+                    <option value="Ogden">Ogden</option>
+                    <option value="Salt Lake City">Salt Lake City</option>
+                    <option value="Provo">Provo</option>
+                    <option value="Uintas">Uintas</option>
+                    <option value="Skyline">Skyline</option>
+                    <option value="Moab">Moab</option>
+                    <option value="Abajos">Abajos</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <input type="submit" id="tourByLocationBtn">
+                </div>
+              </form>
+            </div><br>
+            <div id="displayTourByLocation">
+              <div class="panel-group" id="joinTourByLocationPanel"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

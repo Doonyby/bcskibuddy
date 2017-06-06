@@ -52,6 +52,11 @@ app.get('/user', function(req, res) {
 	res.status(200);
 });
 
+app.get('/demo', function(req, res) {
+    res.sendfile('./public/demo.html');
+    res.status(200);
+});
+
 passport.use(new LocalStrategy(function(username, password, callback) {
     Users.findOne({username: username}, function(err, user) {
         if(err) {

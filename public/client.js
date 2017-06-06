@@ -8,6 +8,10 @@ $(document).ready(function() {
 		window.location.href = '/user';
 	});
 
+	$('#demoButton').click(function() {
+		window.location.href = '/demo';
+	});
+
 	$('#closeNewAccountModal').click(function() {
 		$('#name').val('');
 		$('#username').val('');
