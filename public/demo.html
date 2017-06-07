@@ -14,6 +14,7 @@
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <h4 class="navbar-text navbar-center" id="navTitle">This is a demo</h4>
+      <h4 class="navbar-text navbar-center" id="navTitle"><a class="exitDemo" href="/">Exit demo</a></h4>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenu">Menu <span class="caret"></span></a>
@@ -66,14 +67,85 @@
                       <button type="button" class="btn btn-link" data-toggle="collapse" href="#planTourCollapse">Collapse</button>
                   </div>
                 </div>
-            </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="panel panel-default" id="joinedToursDisplay">
           <div class="panel-body">
             <h2>My Joined Tours</h2><hr>
-            <div class="panel-group" id="joinedTourPanel"></div>
+            <div class="panel-group" id="joinedTourPanel">
+              <p>These are the tours that you have joined.</p>
+              <div class="panel panel-primary">
+                <div class="panel-heading collapsed" role="tab button" id="joinTourHeading" data-toggle="collapse" href="#joinTourCollapse" aria-expanded="false" aria-controls="joinTourCollapse">
+                  <h4 class="panel-title">
+                    Logan: Wellsville Range, Tue Jan 24 2017: 09:00<span class="caret" style="float:right;"></span>
+                  </h4>
+                </div>
+                <div id="joinTourCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="joinTourHeading">
+                  <div class="panel-body">
+                    <h4>Tour Organizer: <a href="#"><u>Nelly</u></a></h4>
+                    <h4>Difficulty: Moderate/Intermediate</h4>
+                    <h4>Members Going: Kelly, Kelly's dog, Rob, Bob, </h4>
+                    <p>View the Utah Avalanche Center advisory for this area <a target="_blank" href="https://utahavalanchecenter.org/advisory/Logan"><u>here.</u></a>
+                    <h4>Comments:</h4>
+                    <div id="commentsDiv">
+                      <div class="media">
+                        <div class="media-body">
+                          <h5 class="media-heading"><a href="#"><u>Kelly's dog</u></a></h5>
+                          <p>I do not know you, but I love you. Squirrel!</p>
+                          <h5 class="media-heading"><a href="#"><u>Rob</u></a></h5>
+                          <p>Wellsville Smellsville</p>
+                        </div>
+                      </div> 
+                    </div>
+                    <div id="addCommentsDiv">
+                      <br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" placeholder="Enter new comment here."></textarea><br>
+                      <p>Press "Enter" to post comment.</p>
+                    </div>                         
+                  </div>
+                  <div class="panel-footer">
+                      <button type="button" style="float: right;" class="btn btn-link"><span class="text-danger">Cancel Tour</span></button>
+                      <button type="button" class="btn btn-link" data-toggle="collapse" href="#joinTourCollapse">Collapse</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel panel-primary">
+                <div class="panel-heading collapsed" role="tab button" id="joinTourHeading2" data-toggle="collapse" href="#joinTourCollapse2" aria-expanded="false" aria-controls="joinTourCollapse2">
+                  <h4 class="panel-title">
+                    Provo: Big springs up to camelback pass, Sun Jan 01 2017: 14:00<span class="caret" style="float:right;"></span>
+                  </h4>
+                </div>
+                <div id="joinTourCollapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="joinTourHeading2">
+                  <div class="panel-body">
+                    <h4>Tour Organizer: <a href="#"><u>Poseidon</u></a></h4>
+                    <h4>Difficulty: Light/Beginner</h4>
+                    <h4>Members Going: Magnus</h4>
+                    <p>View the Utah Avalanche Center advisory for this area <a target="_blank" href="https://utahavalanchecenter.org/advisory/Provo"><u>here.</u></a>
+                    <h4>Comments:</h4>
+                    <div id="commentsDiv">
+                      <div class="media">
+                        <div class="media-body">
+                          <h5 class="media-heading"><a href="#"><u>Poseidon</u></a></h5>
+                          <p>Light afternoon jaunt.</p>
+                          <h5 class="media-heading"><a href="#"><u>Magnus</u></a></h5>
+                          <p>To the max.</p>
+                        </div>
+                      </div> 
+                    </div>
+                    <div id="addCommentsDiv">
+                      <br><br><textarea class="form-control" rows="4" onkeydown="enterPushed(event, this.value, this.id)" placeholder="Enter new comment here."></textarea><br>
+                      <p>Press "Enter" to post comment.</p>
+                    </div>                         
+                  </div>
+                  <div class="panel-footer">
+                      <button type="button" style="float: right;" class="btn btn-link"><span class="text-danger">Cancel Tour</span></button>
+                      <button type="button" class="btn btn-link" data-toggle="collapse" href="#joinTourCollapse2">Collapse</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="panel panel-default" id="tourByLocation">

@@ -80,3 +80,15 @@ div > h1, h2 {
 .indexDiv {
 	margin-top: 20px;
 }
+
+.exitDemo {
+	color: #fff;
+	text-decoration: none;
+}
+
+.exitDemo:hover {
+	color: #fff;
+	opacity: 0.6;
+}
+
+
