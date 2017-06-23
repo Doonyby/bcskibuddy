@@ -100,11 +100,31 @@ div > h1, h2 {
 		padding: 20px 40px 20px 40px;		
 	}
 
+	.infoBody {
+		height: 100%;
+		width: 100%;
+		background-color: #337ab7;
+		background-image: none;
+	}
+
+	.infoTile {
+		margin: 40px 15% 40px 15%;
+		width: 70%;
+		height: 90%;
+		position: absolute;
+		border: 1px solid #222;
+		border-radius: 5px;
+		background-color: #fff;
+		padding: 20px 30px 20px 30px;
+		overflow: auto;
+	}
+
 }
 
 @media only screen and (max-width: 767px) {
 	body {
 		height: 100%;
+		background-color: #337ab7;
 	}
 
 	.indexBody {
@@ -114,6 +134,25 @@ div > h1, h2 {
 
 	.landingTitle {
 		padding-top: 70%;
+	}
+
+	.infoBody {
+		height: 100%;
+		width: 100%;
+		background-color: #337ab7;
+		background-image: none;
+	}
+
+	.infoTile {
+		margin: 40px 10% 40px 10%;
+		width: 80%;
+		height: 90%;
+		position: absolute;
+		border: 1px solid #222;
+		border-radius: 5px;
+		background-color: #fff;
+		padding: 20px 30px 20px 30px;
+		overflow: auto;
 	}
 
 }
