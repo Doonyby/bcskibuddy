@@ -25,9 +25,8 @@ div > h1, h2 {
 }
 
 .userBody {
-	background: url('http://i.imgur.com/W8Aba5J.jpg') no-repeat center fixed;
-/*	background-image: url('http://www.snowsbest.com/wp-content/uploads/2016/09/Alta.jpg');*/
-	background-size: 100%;
+	background: url('./mtnbackdrop.jpg') no-repeat center fixed;
+	background-size: cover;
 }
 
 .infoBody {
@@ -91,4 +90,30 @@ div > h1, h2 {
 	opacity: 0.6;
 }
 
+@media only screen and (max-width: 1024px) {
+	body {
+		height: 100vh;
+	}
 
+	.indexBody {
+		background-position: -30% 25%;
+		padding: 20px 40px 20px 40px;		
+	}
+
+}
+
+@media only screen and (max-width: 767px) {
+	body {
+		height: 100%;
+	}
+
+	.indexBody {
+		background-position: -30% 79%;
+		padding: 20px 40px 20px 40px;		
+	}
+
+	.landingTitle {
+		padding-top: 70%;
+	}
+
+}
